@@ -1,0 +1,18 @@
+
+
+
+express --save
+body-parser --save
+cookie-parser --save
+express-session --save
+
+                               
+express-validator --save
+
+nodemon --save-dev         // or -g
+
+ //not //express-validation --save        //joi --save
+
+
+
+node filename
