@@ -2,44 +2,27 @@ var path = require('path');
 var fs = require('fs');
 
 var express = require('express');
-var app = express();
 var router = express.Router();
+var app = express();
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/dbname');
+var db = mongoose.connection;
+
+//console.log('db : ',db)
+db.on('error',err=>console.log('db err: ',err))
+db.once('open',()=>console.log('db connected'))
 
 
 //Middleware
 require('./middleware')(app);
 
 //Routes
-require('./routes')(app);
-require('./routes/prefix')(app,router);
-require('./routes/files')(app,router);
+require('./main-routes')(app);
 
 
-const { check, validationResult } = require('express-validator/check');
-
-var formValidation = ()=>
-[
-    check('username','user err').isLength({min:2,max:5}),
-    check('password','pass err').custom( (val,{req,location,path})=>{
-        if( val !==req.body.password2){
-            //throw new Error("passwords don\'t match")
-            return false;
-        }
-        return true;//no err
-    } )
-]
 
 
-app.post('/post/test2',formValidation(),(req, res) =>{
-    var err = validationResult(req);
-    console.log('err array: ',err.array());
-    if(err.isEmpty()){
-        res.send('no err');
-    }else{
-        res.send('err')
-    }
-});
 
 
 app.listen(2000, ()=>{
@@ -52,12 +35,6 @@ app.listen(2000, ()=>{
 /*
 process.env.PORT
 //--------
-var mongoose = require('mongoose');
-mongoose.connect('....');
-var db = mongoose.connection;
-
-*/
-
 
 //deprecated
 /*

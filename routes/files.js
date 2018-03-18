@@ -1,84 +1,85 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports = (app, router)=>{
-    app.use('/files',router);
-
-    //files add/copy
-    router.get("/addFile",(req,res)=>{
-
-        
-        var data = fs.readFile('./files/test.txt','utf8',(err, data)=>{
-            if(err){
-                res.status(404).send('file not found<br /> '+ err.message);
-            }else{
-                fs.exists('./files/testCopy.txt',exists =>{
-                    if(exists){
-                        res.send('file already exists');
-                    }else{
-                        fs.writeFile('./files/testCopy.txt',data, err=>{
-                                if(err){
-                                    res.status(500).send("something went wrong<br />"+err);
-                                }else{
-                                    res.send('file copied');
-                                }
-                        });//
-                    }
-                });//
-              
-            }
-           
-        });//
-        
+var express = require('express');
+var router = express.Router();
 
 
-        
-        
-    });  
-
-    router.get("/delFile",(req,res)=>{ 
-        fs.unlink('./files/testCopy.txt',err=>{
-            if(err){
-                res.send('err: <br/>' + err.message);
-            }else{
-                res.send('deleted');
-            }
-           
-        });
-       
-    });
+//files add/copy
+router.get("/addFile",(req,res)=>{
 
     
-    router.get("/getFile",(req, res)=>{
-        console.log( fs.statSync('./files/test.html').isFile() );
+    var data = fs.readFile('./files/test.txt','utf8',(err, data)=>{
+        if(err){
+            res.status(404).send('file not found<br /> '+ err.message);
+        }else{
+            fs.exists('./files/testCopy.txt',exists =>{
+                if(exists){
+                    res.send('file already exists');
+                }else{
+                    fs.writeFile('./files/testCopy.txt',data, err=>{
+                            if(err){
+                                res.status(500).send("something went wrong<br />"+err);
+                            }else{
+                                res.send('file copied');
+                            }
+                    });//
+                }
+            });//
+            
+        }
         
-        //res.sendFile("/test.txt", {root: path.join(__dirname, '../files')} );
-        res.sendFile("/test.html", {root: path.join(__dirname, '../files')} );
+    });//
+    
+
+
+    
+    
+});  
+
+router.get("/delFile",(req,res)=>{ 
+    fs.unlink('./files/testCopy.txt',err=>{
+        if(err){
+            res.send('err: <br/>' + err.message);
+        }else{
+            res.send('deleted');
+        }
+        
     });
+    
+});
 
-    router.get('/mkdir',()=>{
-        fs.mkdir('../files/newDir',(err)=>{
-            if(err){
-                res.send('mkdir err');
-            }else{
-                res.send('mkdir done');
-            }
-        })
+
+router.get("/getFile",(req, res)=>{
+    console.log( fs.statSync('./files/test.html').isFile() );
+    
+    //res.sendFile("/test.txt", {root: path.join(__dirname, '../files')} );
+    res.sendFile("/test.html", {root: path.join(__dirname, '../files')} );
+});
+
+router.get('/mkdir',()=>{
+    fs.mkdir('../files/newDir',(err)=>{
+        if(err){
+            res.send('mkdir err');
+        }else{
+            res.send('mkdir done');
+        }
+    })
+});
+router.get('/rmdir',()=>{
+    //not recursive
+    fs.rmdir('../files/newDir',(err)=>{
+        if(err){
+            res.send('rmdir err');
+        }else{
+            res.send('rmdir done');
+        }
     });
-    router.get('/rmdir',()=>{
-        //not recursive
-        fs.rmdir('../files/newDir',(err)=>{
-            if(err){
-                res.send('rmdir err');
-            }else{
-                res.send('rmdir done');
-            }
-        });
-    });
-
-}
+});
 
 
+
+module.exports = router;
 
 
 
