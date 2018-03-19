@@ -1,5 +1,5 @@
 
-module.exports = (app, router)=>{
+module.exports = (app)=>{
 
     app.get("/", (req, res)=>{
         //req.query
@@ -28,12 +28,6 @@ module.exports = (app, router)=>{
         
     });  
 
-
-    app.get('/cookie',(req, res)=>{
-        res.cookie('cName','cVal',{ maxAge:20*1000 });
-        //res.clearCookie('cName');
-        res.send('cookie..');
-    });
 
 
     app.get("/event",(req, res)=>{

@@ -16,20 +16,35 @@ module.exports = (app) =>{
     app.use(session({
         secret:'sc1234567',
         saveUninitialized:true,
-        resave:true
+        resave:false,
+        name:'sessionName',
+        cookie:{
+            maxAge:20*1000
+        }
     }));
     app.use('/',(req,res,next)=>{
-        console.log('cookie: ',req.cookies);
-        console.log('--------------------')
-        console.log('session: ',req.session);
+        //req.session.wqeqwe = wqeq
+        //console.log('cookie: ',req.cookies);
+        //console.log('--------------------')
+
+        /*
+            console.log('session: ',req.session);
+            //console.log('session exp: ',req.session.cookie._expires);
+            console.log('session exp: ',Date.parse(req.session.cookie._expires) );
+            console.log('now: ',Date.now());
+            if( Date.parse(req.session.cookie._expires) < Date.now() ){
+                console.log('session expired')
+            }else{  console.log('session NOT expired') }
+        */
+
         next();
     });
+    
 
     app.use(expressValidator());
 
     //app.use(express.static(path.join(__dirname,"public")));
-    app.use("/",express.static(path.join(__dirname,"files")));
-
+    app.use("/",express.static(path.join(__dirname,"../files")));
 }   
 
 
