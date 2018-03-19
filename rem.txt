@@ -28,8 +28,10 @@ net start MongoDB
 
 mongo
 show dbs
+show collections
 use testDbName // switch/create
 
+//use testDb; db.createCollection('articles');
 //{fName:"test",lName:"ltest",list:["l1","l2"]}
 
 db.createUser({

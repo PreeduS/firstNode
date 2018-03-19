@@ -6,4 +6,5 @@ module.exports = (app)=>{
     app.use('/files',   require('./routes/files') );
     app.use('/cookies', require('./routes/cookies') );
     app.use('/validation', require('./routes/validation') );
+    app.use('/db', require('./routes/db') );
 }

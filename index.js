@@ -5,9 +5,9 @@ var express = require('express');
 var router = express.Router();
 var app = express();
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/dbname');
-var db = mongoose.connection;
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/testDb');
+const db = mongoose.connection;
 
 //console.log('db : ',db)
 db.on('error',err=>console.log('db err: ',err))
