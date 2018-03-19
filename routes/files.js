@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+const rootPath = require('../config').rootPath;
 
 module.exports = (app, router)=>{
     app.use('/files',router);
@@ -50,10 +51,66 @@ module.exports = (app, router)=>{
 
     
     router.get("/getFile",(req, res)=>{
-        console.log( fs.statSync('./files/test.html').isFile() );
+
+        var filePath = path.join(rootPath, '/prFiles','test.html');                      
+       /*
+        fs.stat(filePath ,(err,stats) =>{           //stat: provide info about file
+            if(err){
+                res.send('err: '+err + ', code: '+ err.code)
+            }else{
+               
+                res.sendFile(filePath,{},err=>{
+                    if(err){
+                       res.send('err sendFile: '+err+', code: '+ err.code);                
+                    }else{
+                        console.log('sendFile successfully')
+                    }
+                });
+            }
+        });
+        */
+        //res.sendFile("/test.html", {root: path.join(__dirname, '../files')} );
+        //console.log( fs.statSync('./files/test.html').isFile() );
         
-        //res.sendFile("/test.txt", {root: path.join(__dirname, '../files')} );
-        res.sendFile("/test.html", {root: path.join(__dirname, '../files')} );
+        var _checkFIle = ()=>{
+            var pCall = (resolve,reject)=>{
+                fs.stat(filePath ,(err,stats) =>{
+                    if(err){
+                        return reject(err.code);        
+                    }
+                    resolve( 'no err');
+                });
+            }
+
+            return new Promise(pCall).catch(err=>({err:err}))
+        }
+        
+        
+        var _sendFile = ()=>{
+             var pCall = (resolve,reject)=>{
+                res.sendFile(filePath,{},err=>{
+                    if(err){
+                        return reject('err sendFile: '+err+', code: '+ err.code);                
+                    }
+                    resolve('sendFile successfully');                   
+                });
+            }
+
+            return new Promise(pCall).catch(err=>({err:err}))
+        }
+        
+
+        var wrap = async()=>{
+            var chFile = await _checkFIle();    
+            if(chFile.err){ return res.send(chFile);}
+            
+            var sFile = await _sendFile();
+            if(sFile.err){ return res.send(sFile);}
+           
+        }
+        wrap();
+
+
     });
 
     router.get('/mkdir',()=>{
