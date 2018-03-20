@@ -1,8 +1,6 @@
-var path = require('path');
-var fs = require('fs');
-
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var app = express();
 
 const mongoose = require('mongoose');
@@ -17,11 +15,13 @@ db.once('open',()=>console.log('db connected'))
 //Middleware
 require('./middleware')(app);
 
+//Passport
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Routes
 require('./main-routes')(app);
-
-
-
 
 
 

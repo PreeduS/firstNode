@@ -6,8 +6,10 @@ body-parser --save
 cookie-parser --save
 express-session --save                       
 express-validator --save
-npm install mongoose --save
+mongoose --save
+passport passport-local --save
 
+bcryptjs --save
 
 nodemon --save-dev         // or -g
 

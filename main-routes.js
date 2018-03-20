@@ -7,4 +7,5 @@ module.exports = (app)=>{
     app.use('/cookies', require('./routes/cookies') );
     app.use('/validation', require('./routes/validation') );
     app.use('/db', require('./routes/db') );
+    app.use('/u', require('./routes/users') );
 }
