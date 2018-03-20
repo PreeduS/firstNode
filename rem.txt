@@ -25,8 +25,10 @@ mongoDB
 
 mongod --directoryperdb --dbpath D:\mongoDB\data\db --logpath D:\mongoDB\log\mongo.log --logappend --install
 net start MongoDB
+net stop MongoDB
 
-mongo
+//mongod            //start db
+mongo               //connect to db
 show dbs
 show collections
 use testDbName // switch/create
