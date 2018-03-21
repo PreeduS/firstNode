@@ -4,13 +4,11 @@ var passport = require('passport');
 var app = express();
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/testDb');
+mongoose.connect('mongodb://localhost/testDb');//cb
 const db = mongoose.connection;
 
-//console.log('db : ',db)
 db.on('error',err=>console.log('db err: ',err))
 db.once('open',()=>console.log('db connected'))
-
 
 //Middleware
 require('./middleware')(app);
@@ -33,7 +31,7 @@ app.listen(2000, ()=>{
 
 
 /*
-process.env.PORT
+process.env.PORT //global
 //--------
 
 //deprecated

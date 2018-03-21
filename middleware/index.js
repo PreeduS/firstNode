@@ -11,7 +11,15 @@ module.exports = (app) =>{
     app.use(bodyParser.urlencoded({extended:false})); //for req.body
 
     app.use(cookieParser());
-
+    
+    //store
+    var MongoDBStore = require('connect-mongodb-session')(session);
+    var store = new MongoDBStore({
+        uri: 'mongodb://localhost/testDb',
+        databaseName: 'testDb',
+        collection: 'mongoStore'        
+    });
+    store.on('error', err => console.log('MongoDBStore err: ',err) );
 
     app.use(session({
         secret:'sc1234567',
@@ -20,8 +28,10 @@ module.exports = (app) =>{
         name:'sessionName',
         cookie:{
             maxAge:20*1000
-        }
+        },
+        store:store
     }));
+    
     app.use('/',(req,res,next)=>{
         //req.session.wqeqwe = wqeq
         //console.log('cookie: ',req.cookies);

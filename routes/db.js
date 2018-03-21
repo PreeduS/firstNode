@@ -50,4 +50,7 @@ module.exports = router;
 /*
 article.update({_id:"..."}, newObject,  err=>{...})
 article.update({ _id: id }, { $set: { size: 'large' }}, callback);
+//updateOne({ _id: id },{ $set: { size: 'large' }}, callback)
+
+//deleteOne //? remove
 */
