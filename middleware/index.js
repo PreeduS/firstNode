@@ -15,19 +15,19 @@ module.exports = (app) =>{
     //store
     var MongoDBStore = require('connect-mongodb-session')(session);
     var store = new MongoDBStore({
-        uri: 'mongodb://localhost/testDb',
-        databaseName: 'testDb',
+        uri: require('../config').dbConnection,
+        databaseName: require('../config').dbName,
         collection: 'mongoStore'        
     });
     store.on('error', err => console.log('MongoDBStore err: ',err) );
 
     app.use(session({
         secret:'sc1234567',
-        saveUninitialized:true,
+        saveUninitialized:false,
         resave:false,
         name:'sessionName',
         cookie:{
-            maxAge:20*1000
+            maxAge:10*60*1000
         },
         store:store
     }));
@@ -54,7 +54,7 @@ module.exports = (app) =>{
     app.use(expressValidator());
 
     //app.use(express.static(path.join(__dirname,"public")));
-    app.use("/",express.static(path.join(__dirname,"../files")));
+    app.use("/",express.static(path.join(__dirname,"../public")));
 }   
 
 

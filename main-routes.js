@@ -8,4 +8,5 @@ module.exports = (app)=>{
     app.use('/validation', require('./routes/validation') );
     app.use('/db', require('./routes/db') );
     app.use('/u', require('./routes/users') );
+    app.use('/other', require('./routes/other') );
 }

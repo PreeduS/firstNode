@@ -27,6 +27,11 @@ router.get("/register",(req,res)=>{
    
 });
 router.get("/login",(req, res, next)=>{ 
+
+    if(req.user){ //stored here
+        return res.send('Already logged in as '+req.user); 
+    }
+
     req.body.username = 'user1';
     req.body.password = 'password';
     //let r = passport.authenticate('local',/*{successRedirect:'/',failureRedirect:'/'}*/)(req, res, next);
@@ -43,29 +48,28 @@ router.get("/login",(req, res, next)=>{
         if (err) { return next(err); }
         if (!user) {  return res.send('[!user] - '+ info.message); }
         req.logIn(user, err=> {
-            if (err) { console.log('login err: ',err); return res.send('login err'); }
-            
-            res.send('logged in as: ' + user)
+            if (err) { console.log('login err: ',err); return res.send('login err'); }            
+            res.send('logged in as: ' + user); 
 
-            //establish session, check later if needed or is just an  alias
-            /*req.login(user, err=>{      
-                if(err){ return res.send('login err: '+err); }
-                res.send('logged in as: ' + user)
-            });*/
-            
-            
             //return res.redirect('/users/' + user.username);
         })
 
     })(req, res, next);
   
-    console.log('----------req.user', req.user); //stored here
     
 });
 
 router.get("/logout",(req, res, next)=>{ 
     req.logout();
-    res.send('Logged out...')
+    
+    req.session.destroy(err=>{
+        if(!err){ 
+            res.clearCookie('sessionName',{path:'/'}); 
+            return res.send('Logged out...')
+        }
+        res.send('Err Logging out...')
+    })
+    
 });
 //protected routes test...
 
@@ -85,13 +89,12 @@ router.get("/pr2",(req, res, next)=>{
 },(req, res)=>{ 
     res.send(
         'req.user: ' + req.user + '<br />' +
-        'req.isAuth: ' + req.isAuth
+        'res.locals.isAuth: ' + res.locals.isAuth
     );
 });
 
 
 router.use('/',(req, res, next)=>{
-    console.log('[ch auth]');
     if(req.isAuthenticated()){
         return next();
     }
@@ -100,8 +103,7 @@ router.use('/',(req, res, next)=>{
 
 router.get("/pr3",(req, res)=>{ 
     res.send(
-        'req.user: ' + req.user + '<br />' +
-        'req.isAuth: ' + req.isAuth
+        'req.user: ' + req.user + '<br />' 
     );
 });
 

@@ -24,3 +24,8 @@ router.get('/destroy/',(req,res)=>{
 });
 
 module.exports = router;
+
+/*
+req.session.regenerate(function(err) {})
+req.session.destroy(function(err) {})
+*/

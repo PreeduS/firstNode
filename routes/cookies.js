@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.get('/cookie',(req, res)=>{
     res.cookie('cName','cVal',{ maxAge:20*1000 });
-    //res.clearCookie('cName');
+    //res.clearCookie('cName');  //{path:'/'}
     //req.cookie.someName //req
     res.send('cookie..');
 });

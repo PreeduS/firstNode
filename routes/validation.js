@@ -33,3 +33,27 @@ router.post('/post/test2',formValidation(),(req, res) =>{
 module.exports = router;
 
 
+
+
+
+
+/*
+//deprecated
+/*
+app.post('/post/test',(req, res) =>{
+    req.check('username','uname err').notEmpty().isLength({min:5,max:10});
+    req.checkBody('password','password err').notEmpty().equals(req.body.password2)
+    req.checkBody('password2','password2 err').notEmpty();
+    var err = req.validationErrors();
+    if(err){
+        var errors = err.reduce( (acc,value)=>{
+            acc[value.param] = value.msg;
+            return acc;
+        },{});
+        console.log('err: ',err)
+        console.log('errorserr: ',errors)
+    }
+
+    res.send(JSON.stringify(req.body) + '<br />' + JSON.stringify(errors) );
+});
+*/
