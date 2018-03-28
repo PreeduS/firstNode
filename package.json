@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "fe-build": "npm --prefix ./FE run webpack",
+    "default": "npm run fe-build && npm run start"
   },
   "author": "",
   "license": "ISC",

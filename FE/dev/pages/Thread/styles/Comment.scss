@@ -1,0 +1,44 @@
+
+.comments-wrapper{width:40%;
+    
+    box-sizing: border-box;
+    margin-bottom:25px;
+}
+.container{
+    display:flex;
+}
+
+.content-left,
+.content-right{
+    
+}
+
+.content-left{	border:1px solid #dfe6e9;
+    width:50px;
+    height:50px;
+    flex-shrink:0;
+    flex-grow:0;
+    margin-right:5px;
+
+}
+.content-right{ 
+    /*border-left:1px solid #dfe6e9;*/
+    flex:1;
+    min-height:30px;
+    
+}
+.header{
+    height:24px;
+    border-bottom:1px solid #dfe6e9;
+    display:flex;
+    padding:0px 5px;
+}
+    .username{
+        margin: auto 0;
+        font-weight:bold;
+    }
+.content{
+    padding:0px 5px;
+    padding-top:6px;
+    
+}	
