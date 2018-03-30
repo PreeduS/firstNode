@@ -2,9 +2,14 @@ import React from 'react';
 
 import AppRouter from '../router'
 
+import styles from './App.scss'
+
 const App = ()=>(
     <div>
-        <AppRouter />
+        <div className = {styles.app}>
+            <AppRouter />
+        </div>
+
     </div>
 
 );

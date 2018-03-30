@@ -2,11 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 
-import Comments from './components/Comments';
+import Comments from './containers/Comments';
+import Content from './components/Content';
+
+import styles from './styles/Thread.scss';
+
 
 class Thread extends React.Component {
     render() {
-        return <div>On Thread...
+        return <div className = {styles.threadWrapper}>
+            <Content />
             <Comments />
         </div>
     }

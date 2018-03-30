@@ -139,8 +139,10 @@ connection
 
 /*
 
-Comments.belongsTo(Thread,{foreignKey:'fk_threadId',targetKey:'primaryKeyKolumn'}) //one-to-one // targetKey - defaults to Thread primary key
+//1:1
+Comments.belongsTo(Thread,{foreignKey:'fk_threadId',targetKey:'primaryKeyKolumn'}) //one-to-one // targetKey - defaults to Thread primary key //fk to Comments
+Team.hasOne(Player);  //same as belongsTo but source & target are reversed
 
-//Team.hasOne(Player);  //same as belongsTo but source & target are reversed
 
+Thread.hasMany(Comments);       //adds fk ThreadId to comments 
 */

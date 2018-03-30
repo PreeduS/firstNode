@@ -1,0 +1,60 @@
+$sideMenuWidth: 260px;
+$topMenuHeight: 40px;
+
+
+$topMenuBorder: rgb(220,220,220);
+$topMenuBG: #FAFAFA;
+
+$appMainContainerBG: #F5F6FA;
+
+$appSideMenuBG: #f1f2f6;
+ 
+
+.app-top-menu{
+    border-bottom:1px solid $topMenuBorder;
+    height:$topMenuHeight;
+    background:$topMenuBG;
+  
+}
+.app-wrapper{
+
+    //display: flex;
+    width:100%;
+    position:relative;
+
+
+    .app-main-container{
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+
+        width:calc(100% - #{$sideMenuWidth});
+        min-height:400px;
+        overflow: hidden;
+
+
+        min-height:calc(100% - #{$topMenuHeight + 1} );
+
+       background: $appMainContainerBG;
+       padding-bottom:50px;
+      
+    }
+
+
+    .app-side-menu{ 
+        position: absolute;
+        right:0px;
+        top:0px;
+        box-sizing: border-box;
+        padding:0px 10px; 
+  
+
+        background: $appSideMenuBG;   
+  
+        height:100%;
+ 
+        display: inline-block;
+        vertical-align: top;
+        width:$sideMenuWidth;
+    }
+}

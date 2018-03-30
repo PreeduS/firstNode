@@ -1,0 +1,38 @@
+@import '../../../commons/styles/variables';
+
+.content{
+    background:rgb(251,251,251);
+    background: #FAFAFA;
+
+    border:1px solid $gray-lighter1;
+    min-height:80px;
+    padding:10px 5px;
+    margin:20px 0px;
+    display:flex;
+    >div{
+        width:100%; 
+        border:1px solid $gray-lighter1;
+        margin:auto 0px;
+        min-height:60px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .left-container{
+            flex-shrink: 0;
+            flex-basis: 60px;
+            height:60px;
+            margin-right:10px;
+
+            border:1px solid $gray-lighter1;
+        }
+        .right-container{
+            flex:1;
+    
+            border:1px solid $gray-lighter1;
+      
+        } 
+    
+    }
+
+
+}

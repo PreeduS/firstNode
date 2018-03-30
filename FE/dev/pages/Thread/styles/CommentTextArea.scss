@@ -1,0 +1,22 @@
+@import '../../../commons/styles/variables';
+
+.commentTextArea-wrapper{
+    textarea{
+        background-color: transparent;
+        border: 1px solid $gray;
+        outline:none;
+        resize:none;
+        width:100%;
+        max-width:600px;
+        height:60px;
+        min-height:60px;
+        max-height:140px;
+        overflow: hidden;
+
+        padding:10px 5px;
+
+        &:focus{
+            resize:vertical;
+        }
+    }
+}
