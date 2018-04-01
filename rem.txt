@@ -1,29 +1,43 @@
 
-
+------------save------------
 
 express --save
 body-parser --save
 cookie-parser --save
 express-session --save                       
 express-validator --save
+passport passport-local --save
+bcryptjs --save
+
+
+------------db------------
 mongoose --save
 connect-mongodb-session --save
-passport passport-local --save
+--------
+sequelize --save
+pg pg-hstore --save
 
-bcryptjs --save
+------------saveDev------------
 
 nodemon --save-dev         // or -g
 
 
 
-----
+------------------------
 node filename
 nodemon filename
 
 
+----------------------sequelize----------------------
 
---------------------------------------------
-mongoDB
+
+
+
+
+
+
+----------------------mongoDB----------------------
+
 
 
 mongod --directoryperdb --dbpath D:\mongoDB\data\db --logpath D:\mongoDB\log\mongo.log --logappend --install

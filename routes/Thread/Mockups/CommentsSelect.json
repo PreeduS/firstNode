@@ -1,0 +1,9 @@
+[{"id":1,"content":"content...","replyto":null,"groupid":null,"nrreplies":0,"userid": 1},
+{"id":2,"content":"content2...","replyto":null,"groupid":null,"nrreplies":5,"userid": 1},
+{"id":3,"content":"content3...","replyto":2,"groupid":2,"nrreplies":0,"userid": 1},
+{"id":4,"content":"content4...","replyto":2,"groupid":2,"nrreplies":0,"userid": 1},
+{"id":5,"content":"content5...","replyto":4,"groupid":2,"nrreplies":0,"userid": 1},
+{"id":8,"content":"content8...","replyto":null,"groupid":null,"nrreplies":0,"userid": 1},
+{"id":9,"content":"content9...","replyto":null,"groupid":null,"nrreplies":0,"userid": 1},
+{"id":10,"content":"content10...","replyto":null,"groupid":null,"nrreplies":0,"userid": 1}]
+

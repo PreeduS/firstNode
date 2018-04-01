@@ -33,7 +33,7 @@ const Thread = connection.define('thread', {
         }
     },
     content: {
-      type: Sequelize.Text,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     parentId:{
@@ -92,7 +92,7 @@ module.exports = router;
 connection
   .query(
     'SELECT * FROM projects WHERE status = ?',
-    { raw: true, replacements: ['active']
+    { raw: true, replacements: ['active'] }
   )
   .then(projects => {
     console.log(projects)

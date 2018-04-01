@@ -2,16 +2,24 @@ const path = require('path');
 
 module.exports = (app)=>{
     //require('./routes')(app);
-    const pr = '/api'; //be prefix
 
-    app.use(pr+"/prefix",  require('./routes/prefix') );
-    app.use(pr+'/session', require('./routes/session') );
-    app.use(pr+'/files',   require('./routes/files') );
-    app.use(pr+'/cookies', require('./routes/cookies') );
-    app.use(pr+'/validation', require('./routes/validation') );
-    app.use(pr+'/db', require('./routes/db') );
-    app.use(pr+'/u', require('./routes/users') );
-    app.use(pr+'/other', require('./routes/other') );
+    //temp    
+    let pr = '/temp'; //be prefix
+
+    app.use(pr+"/prefix",  require('./tempRoutes/prefix') );
+    app.use(pr+'/session', require('./tempRoutes/session') );
+    app.use(pr+'/files',   require('./tempRoutes/files') );
+    app.use(pr+'/cookies', require('./tempRoutes/cookies') );
+    app.use(pr+'/validation', require('./tempRoutes/validation') );
+    app.use(pr+'/db', require('./tempRoutes/db') );
+    app.use(pr+'/u', require('./tempRoutes/users') );
+    app.use(pr+'/other', require('./tempRoutes/other') );
+
+    //edit later
+    pr = '/api';
+
+    app.use(pr+"/Thread",  require('./routes/Thread') );
+
 
     app.get(pr+'/*',(req, res)=>{
         res.status(404).send('404');

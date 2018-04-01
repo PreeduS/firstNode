@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
 
 import ThreadComponent from '../pages/Thread';
+import ThreadsComponent from '../pages/Threads';
 
 import styles from './AppRouter.scss';
 
@@ -13,6 +14,7 @@ const AppRouter = () =>(
         <div>
             <div className = {styles.appTopMenu}>
                 <NavLink exact  to="/Thread" >ThreadComponent</NavLink>
+                <NavLink exact  to="/Threads" >ThreadsComponent</NavLink>
                 <NavLink exact  to="/" >null</NavLink>
             </div>
            
@@ -20,6 +22,7 @@ const AppRouter = () =>(
                 <div className = {styles.appMainContainer}>
                     <Switch >
                         <Route path="/Thread" component = {ThreadComponent} />
+                        <Route path="/Threads" component = {ThreadsComponent} />
                         <Route path="/" render = {()=> <div>Null /</div>} />
                     </Switch> 
                 </div>
