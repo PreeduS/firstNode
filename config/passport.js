@@ -4,9 +4,12 @@ const bcrypt = require('bcryptjs');
 
 
 module.exports = (passport)=>{
-    passport.use(new LocalStrategy((username, password, done)=>{
+    passport.use(new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password'        
+    },(username, password, done)=>{
 
-        Project.findOne({ where: {username: username} }).then(user => {
+        User.findOne({ where: {username: username} }).then(user => {
             console.log('user : ',user)
          
             if(!user){
@@ -34,16 +37,14 @@ module.exports = (passport)=>{
         done(null, user.id);
       });
       
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-        /*
-        User.findOne({where: {id: id}}).success(function(user){
-            done(null, user);
-          }).error(function(err){
+    passport.deserializeUser(function(id, done) { 
+
+        User.findOne({where: {id: id}}).then((user,err) =>{
+            //done(null, user);
+            done(null, user.username);
+          }).error(err =>{
             done(err, null);
-          });*/
+          });
 
     });
 

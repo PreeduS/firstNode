@@ -14,19 +14,19 @@ class Threads extends React.Component {
         }
     }
     componentDidMount(){
-        let that = this;
+
 
         axios.get('/api/threads/getThreads')
-        .then(function (response) {
+        .then( response => {
           console.log(response.data);
  
-            that.setState({
+            this.setState({
                 threads: response.data
-            })
+            });
 
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch( err => {
+          console.log(err);
         });
       
 

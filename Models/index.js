@@ -16,7 +16,7 @@ connection.authenticate().then(() => {
 //models
 const Comment = require('./CommentModel')(connection);
 const Thread = require('./ThreadModel')(connection);
-const User = require('./UserModes')(connection);
+const User = require('./UserModel')(connection);
 
 
 //Relations

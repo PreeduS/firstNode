@@ -20,6 +20,7 @@ module.exports = (app)=>{
 
     app.use(pr+"/Thread",  require('./routes/Thread') );
     app.use(pr+"/Threads",  require('./routes/Threads') );
+    app.use(pr+"/UserManager",  require('./routes/UserManager') );
 
 
     app.get(pr+'/*',(req, res)=>{
