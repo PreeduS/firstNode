@@ -10,10 +10,12 @@ import styles from './styles/Thread.scss';
 
 class Thread extends React.Component {
     render() {
-        return <div className = {styles.threadWrapper}>
-            <Content />
-            <Comments />
-        </div>
+        return (
+            <div className = {styles.threadWrapper}>
+                <Content />
+                <Comments />
+            </div>
+        );
     }
 }
 

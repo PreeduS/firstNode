@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import styles from '../styles/CommentTextArea.scss';
 
@@ -45,4 +44,3 @@ class CommentTextArea extends React.Component {
 }
 
 export default CommentTextArea;
-//export default connect(null, null)(Comments);

@@ -21,11 +21,11 @@ connection.authenticate().then(() => {
     console.error('Unable to connect to the database:', err);
 });
 */
-const connection = require('../Models').connection;
+const connection = require('../../Models').connection;
 
 //models
-const Comment = require('../Models').Comment;
-const Thread = require('../Models').Thread;
+const Comment = require('../../Models').Comment;
+const Thread = require('../../Models').Thread;
 
 
 
@@ -71,38 +71,43 @@ router.get("/addComments",(req,res)=>{
    
 
 });
-router.get("/addThread",(req,res)=>{
-    const threadMockup = [{
-        content:'thread 1',
-        category: 'placeholder',
-        userId: 1
-    }];
-
-    Thread.bulkCreate(threadMockup)
-    .then((result, err)=>{
-        res.send(result); 
-    }).catch(err=>{
-        return res.send('catch err: '+err)
-    });
-   
-
-});
-
-//[tempTag]move to threads page
-router.get("/getThreads",(req,res)=>{               
-    Thread.findAll().then(threads => {
-        res.send(threads);
-    });
-});
-
-
 
 router.get("/getAll",(req,res)=>{
     let threadId = 1;
 
-    connection.query("select * from getComments(?)",{replacements: [threadId] }).then(result => {
+    
+
+    const getResponseStructure = result =>{
         let response = [];
-        console.log( result)
+        let repliesArr = [];
+        
+        result.forEach(el => {
+
+            if(el.groupId === null){
+                response.push(el);
+
+            }else if(response.length){
+                let lastAdded = response[response.length-1];
+                if(el.groupId === lastAdded.id){
+                    //if(lastAdded.replies === undefined){ lastAdded.replies = []; }//lastAdded.replies.push(el);
+                    repliesArr.push(el);              
+                    lastAdded.replies = repliesArr;
+                }else{
+                    repliesArr = [];
+                }
+            }
+            
+            
+        });
+        return response;
+    }
+    /*[tempTag]*/res.send(   getResponseStructure(require('./Mockups/CommentsSelect.json'))    ) ;return; 
+
+    connection.query("select * from getComments(?)",{replacements: [threadId] }).then(result => {
+      
+        
+ /*       
+        let response = [];
         result[0].forEach(el => {
 
             if(el.groupId === null){
@@ -118,6 +123,8 @@ router.get("/getAll",(req,res)=>{
             
             
         });
+        */
+        let response = getResponseStructure(result[0]);
         res.send(response);
       })
 });

@@ -1,19 +1,15 @@
+@import '../commons/styles/variables';
+
 $sideMenuWidth: 260px;
 $topMenuHeight: 40px;
 
 
-$topMenuBorder: rgb(220,220,220);
-$topMenuBG: #FAFAFA;
 
-$appMainContainerBG: #F5F6FA;
-
-$appSideMenuBG: #f1f2f6;
- 
 
 .app-top-menu{
-    border-bottom:1px solid $topMenuBorder;
+    border-bottom:1px solid $appTopMenu-border-color;
     height:$topMenuHeight;
-    background:$topMenuBG;
+    background:$appTopMenu-background-color;
   
 }
 .app-wrapper{
@@ -35,7 +31,7 @@ $appSideMenuBG: #f1f2f6;
 
         min-height:calc(100% - #{$topMenuHeight + 1} );
 
-       background: $appMainContainerBG;
+       background: $appMainContainer-background-color;
        padding-bottom:50px;
       
     }
@@ -49,7 +45,7 @@ $appSideMenuBG: #f1f2f6;
         padding:0px 10px; 
   
 
-        background: $appSideMenuBG;   
+        background: $appSideMenu-background-color;   
   
         height:100%;
  

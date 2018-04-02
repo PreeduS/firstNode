@@ -4,7 +4,7 @@ import axios from 'Axios';
 
 import styles from './styles/Threads.scss';
 
-//import Thread from './components/Thread';
+import Thread from './components/Thread';
 
 class Threads extends React.Component {
     constructor(){
@@ -16,7 +16,7 @@ class Threads extends React.Component {
     componentDidMount(){
         let that = this;
 
-        axios.get('/api/thread/getThreads')
+        axios.get('/api/threads/getThreads')
         .then(function (response) {
           console.log(response.data);
  
@@ -33,9 +33,13 @@ class Threads extends React.Component {
     }
 
     render(){
+        let {threads} = this.state
         return(
             <div>
-                zzz
+                {threads.length && threads.map(t => 
+                    <Thread key = {t.id} {...t}/>
+                )}
+
             </div>
         );
     }

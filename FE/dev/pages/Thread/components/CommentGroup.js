@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import Comment from './Comment';
 
@@ -29,4 +28,3 @@ class CommentGroup extends React.Component {
 }
 
 export default CommentGroup;
-//export default connect(null, null)(Comments);

@@ -3,7 +3,7 @@
 .commentTextArea-wrapper{
     textarea{
         background-color: transparent;
-        border: 1px solid $gray;
+        border: 1px solid $mainContainer-border-color;
         outline:none;
         resize:none;
         width:100%;

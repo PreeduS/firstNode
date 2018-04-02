@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import styles from '../styles/Content.scss';
 
@@ -23,4 +22,3 @@ class Content extends React.Component {
 }
 
 export default Content;
-//export default connect(null, null)(Comments);

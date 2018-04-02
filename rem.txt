@@ -36,8 +36,21 @@ nodemon filename
 
 
 
-----------------------mongoDB----------------------
+----------------------MongoDBStore----------------------
+var MongoDBStore = require('connect-mongodb-session')(session);
+var store = new MongoDBStore({
+    uri: require('../config').dbConnection,
+    databaseName: require('../config').dbName,
+    collection: 'mongoStore'        
+});
+store.on('error', err => console.log('MongoDBStore err: ',err) );
 
+app.use(session({
+    ...
+    store:store
+}));
+
+----------------------mongoDB----------------------
 
 
 mongod --directoryperdb --dbpath D:\mongoDB\data\db --logpath D:\mongoDB\log\mongo.log --logappend --install

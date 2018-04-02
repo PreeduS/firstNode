@@ -1,0 +1,33 @@
+
+.thread-wrapper{
+    height:80px;
+    border-bottom:1px solid rgb(230,230,230);
+    width:100%;
+    box-sizing: border-box;
+    display:flex;
+    flex-direction: column;
+    .top-header{
+        height:24px;
+        border-bottom:1px solid rgb(240,240,240);
+        padding:0px 10px;        
+        display:flex;
+        >div{
+            margin:auto 0px;
+        }
+    }
+    .content{
+
+           display:flex;
+           height:100%;
+    }
+
+    a{
+        text-decoration: none;         
+        color:inherit;
+        padding:5px 10px; 
+        margin:0px;
+        display:block;
+        flex:1;
+
+    }
+}

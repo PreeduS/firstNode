@@ -21,7 +21,7 @@
     
 }
 
-.content-left{	border:1px solid $gray;
+.content-left{	border:1px solid $mainContainer-border-color ;
     width:50px;
     height:50px;
     flex-shrink:0;
@@ -37,7 +37,7 @@
 }
 .header{
     height:24px;
-    border-bottom:1px solid $gray;
+    border-bottom:1px solid $mainContainer-border-color;
     display:flex;
     padding:0px 5px;
 }

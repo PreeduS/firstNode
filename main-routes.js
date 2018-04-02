@@ -19,6 +19,7 @@ module.exports = (app)=>{
     pr = '/api';
 
     app.use(pr+"/Thread",  require('./routes/Thread') );
+    app.use(pr+"/Threads",  require('./routes/Threads') );
 
 
     app.get(pr+'/*',(req, res)=>{

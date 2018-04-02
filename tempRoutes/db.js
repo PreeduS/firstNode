@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const Article = require('../models/article');
+const Article = require('../modelsTemp/article');
 
 router.get("/addArticle",(req,res)=>{ 
     let article = new Article();
