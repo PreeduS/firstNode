@@ -52,5 +52,6 @@ $topMenuHeight: 40px;
         display: inline-block;
         vertical-align: top;
         width:$sideMenuWidth;
+        border-left:1px solid $appSideMenu-border-color;
     }
 }

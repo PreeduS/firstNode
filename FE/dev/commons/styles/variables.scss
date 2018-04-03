@@ -1,20 +1,25 @@
 
-$gray-lighter2: #f5f6fa;
-$gray-lighter1: #ecf0f1;
-$gray: #dfe6e9;
 
+/*
+$gray-lighter2: rgb(245, 246, 250);
+$gray: rgb(223, 230, 233);
+*/
 
 /* #f1f2f6 //bg */
 
-
+/*defaults*/
+$border-color-darker2: rgb(223, 230, 233);
+$border-color-darker: rgb(230,230,230);
+$border-color: rgb(236, 240, 241);
+$border-color-lighter: rgb(240,240,240);
 
 /*appMainContainer*/
 $appMainContainer-background-color: #F5F6FA;
 
 
 /*mainContainer -> main left view*/
-$mainContainer-border-color : $gray;
-$mainContainer-border-color-lighter : $gray-lighter1;
+$mainContainer-border-color : $border-color-darker2;
+$mainContainer-border-color-lighter : $border-color;
 
 
 
@@ -26,4 +31,5 @@ $appTopMenu-background-color: #FAFAFA;
 
 /*appSideMenu*/
 $appSideMenu-background-color: #f1f2f6;
+$appSideMenu-border-color: $border-color-darker;
  

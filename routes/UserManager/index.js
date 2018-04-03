@@ -7,12 +7,16 @@ const passport = require('passport');
 const User = require('../../Models').User;
 
 
-
+const isLoggedIn = async(username) =>{
+    let u = await User.findOne({where: { username: username } });
+    return u.username;  //.length
+};
 
 
 router.get("/register",(req,res)=>{ 
 
     //rem, check if user exists
+    //await const loggedIn = isLoggedIn()
 
     let newUser = {
         username: 'uname4',
@@ -69,5 +73,19 @@ router.get("/login",(req,res,next)=>{
 
 
 });
+
+router.get("/logout",(req, res, next)=>{ 
+    req.logout();
+    
+    req.session.destroy(err=>{
+        if(!err){ 
+            res.clearCookie('sessionName',{path:'/'}); 
+            return res.send('Logged out...')
+        }
+        res.send('Err Logging out...')
+    })
+    
+});
+
 
 module.exports = router;
