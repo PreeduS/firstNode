@@ -4,12 +4,12 @@ import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 
 
-//import PlaceholderReducer from './reducers/PlaceholderReducer';
+import CommentsReducer from '../pages/Thread/reducers/CommentsReducer';
 
 
 const store = createStore(
     combineReducers({
-       // PlaceholderReducer
+        CommentsReducer
     }),
     {},
     applyMiddleware(logger,thunk,promise())

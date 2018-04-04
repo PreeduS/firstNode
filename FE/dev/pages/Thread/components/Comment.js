@@ -1,16 +1,34 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import styles from '../styles/Comment.scss';
+
+import CommentTextArea from './CommentTextArea';
+
+import CommentsReducer from './reducers/CommentsReducer'
 
 class Comment extends React.Component {
     constructor(){
         super();
         this.loadMoreComments = this.loadMoreComments.bind(this);
+        this.toggleReply = this.toggleReply.bind(this);
+        this.addNewComment = this.addNewComment.bind(this);
+        this.state = {
+            isReplyVisible:false
+        }
     }
     loadMoreComments(nrReplies, replies){
         if(nrReplies === 0){return ''; }
         let nrVisibleRplies = replies ? replies.length : 0;
         return `---[t]${nrReplies} - [v]${nrVisibleRplies}`;
+    }
+    toggleReply(){
+        this.setState({
+            isReplyVisible: !this.state.isReplyVisible
+        });
+    }
+    addNewComment(value){
+        this.props.addNewComment(value)
     }
 
     render(){
@@ -19,7 +37,7 @@ class Comment extends React.Component {
         const tempc = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur	`;
-        content = content + ' - ' + tempc.substr(0, Math.floor(Math.random()*300+60) )
+        content = content + ' - ' + tempc;// + tempc.substr(0, Math.floor(Math.random()*300+60) )
 
         let loadMoreComments = this.loadMoreComments(nrReplies, replies);
 
@@ -35,6 +53,10 @@ class Comment extends React.Component {
                             <div className = {styles.content}>
                                 {content}  {loadMoreComments}
                             </div>
+                            <div>
+                                <b onClick = {this.toggleReply}>Reply</b><br />
+                                <CommentTextArea isVisible = {this.state.isReplyVisible} isReply={true} addNewComment = {this.addNewComment}/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -44,4 +66,11 @@ class Comment extends React.Component {
 
 }
 
-export default Comment;
+
+const mapStateToProps = (state)=>( {
+    CommentsReducer: state.CommentsReducer
+});
+
+
+//export default Comment;
+export default connect(mapStateToProps, null)(Comment);

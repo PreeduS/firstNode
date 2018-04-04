@@ -14,6 +14,8 @@ class Comments extends React.Component {
         this.state = {
             comments:[]
         }
+
+        this.addNewComment = this.addNewComment.bind(this);
     }
     componentDidMount(){
         let that = this;
@@ -34,15 +36,28 @@ class Comments extends React.Component {
 
     }
 
+    addNewComment(content){
+        let tempKey = '_'+this.state.comments.length;//rem//use response db id later
+        var newComment = {id: tempKey, content, replyTo: null, groupId: null, nrReplies: 0, userId: 1}
+
+        this.setState({
+            comments:[
+                newComment,
+                ...this.state.comments
+            ]
+        });
+
+    }
+
     render() {
         const {comments} = this.state;
         return <div className = {styles.commentsWrapper}> 
             On Comments...
             <br /><br />
-            <CommentTextArea /><br />
+            <CommentTextArea addNewComment = {this.addNewComment} isVisible = {true}/><br />
 
             {comments.map( c => 
-                <Comment key = {c.id} {...c}> </Comment> 
+                <Comment key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </Comment> 
             )}
 
 
