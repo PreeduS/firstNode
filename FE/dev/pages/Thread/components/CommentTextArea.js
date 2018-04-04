@@ -11,7 +11,12 @@ class CommentTextArea extends React.Component {
             // ref = {this.setTextareaRef}
         }
         this.resizeTextarea = this.resizeTextarea.bind(this);
+        this.addNewComment = this.addNewComment.bind(this);
         this.prevHeight = null;
+
+        this.state = {
+            textarea:''
+        }
     }
 
     resizeTextarea(el){
@@ -31,13 +36,30 @@ class CommentTextArea extends React.Component {
 
         this.prevHeight = elem.scrollHeight;
     }
+    updateTextAreaValue(el){
+        let value = el.target.value;
+        this.setState({
+            textarea:value
+        });
+    }
+
+    addNewComment(){
+        let content = this.state.textarea ;
+        this.props.addNewComment(content);
+    }
 
     render() {
+        const isSubmitDisabled = !this.state.textarea.trim().length;
+        const label = this.props.isReply? 'Add Reply' : 'Add Comment';
+        if(!this.props.isVisible){
+            return <div></div>;
+        }
+
         return (           
             <div className = {styles.commentTextAreaWrapper}>
-                <textarea onChange = {this.resizeTextarea}  defaultValue = "CommentTextarea...">
-                    
-                </textarea>
+                <textarea onChange = {(e)=> {this.resizeTextarea(e); this.updateTextAreaValue(e); } }  value = {this.state.textarea}> </textarea>
+                <br />
+                <button onClick = {this.addNewComment} disabled = {isSubmitDisabled}>{label}</button>
             </div>
         );
     }
