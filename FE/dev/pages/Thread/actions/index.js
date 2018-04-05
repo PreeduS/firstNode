@@ -1,8 +1,16 @@
 
-//import {FETCH_TODOS_PENDING, FETCH_TODOS_SUCCESS, ADD_TODO , DELETE_TODO} from '../actionTypes'
+//import {LOAD_COMMENTS, ADD_COMMENT} from '../actionTypes'
 
-export const addTodoAction = value =>(
-    {   type: ADD_TODO,
-        payload:value
+export const loadComments = comments =>(
+    {
+        type:'LOAD_COMMENTS',
+        payload: comments
     }
 );
+
+export const addComment = comment =>(
+    {
+        type:'ADD_COMMENT',
+        payload: comment
+    }
+)

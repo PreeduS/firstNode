@@ -18,11 +18,10 @@ class CommentGroup extends React.Component {
 
     render() {
         const {replies} = this.props.comment;
-        console.log('z: ', this.props)
 
         return (
             <div style={{border:'1px solid gray'}}>   
-                <Comment {...this.props} isReply = {false} />
+                <Comment {...this.props.comment} isReply = {false} />
                 {replies && replies.map(r =>{
                     return <div key={r.id}> <Comment {...r} isReply = {true}  addNewComment = {this.addNewComment}/> </div>
                 })}

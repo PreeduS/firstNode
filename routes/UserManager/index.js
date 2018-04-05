@@ -7,21 +7,29 @@ const passport = require('passport');
 const User = require('../../Models').User;
 
 
-const isLoggedIn = async(username) =>{
+const userExists = async(username) =>{
     let u = await User.findOne({where: { username: username } });
-    return u.username;  //.length
+    return u!==null;
+    
 };
+router.get("/userExists", async(req,res)=>{ 
+    let username = req.query.username;
+    let exists = await userExists(username);
+    res.send(exists);
+});
 
-
-router.get("/register",(req,res)=>{ 
-
-    //rem, check if user exists
-    //await const loggedIn = isLoggedIn()
+router.get("/register", async(req,res)=>{ 
+    
 
     let newUser = {
         username: 'uname4',
         password: '123456',
         email: 'unamemail4'
+    }
+
+    let exists = await userExists(newUser.username);
+    if(exists){
+        return res.status(400).send('Username is taken');
     }
 
     bcrypt.genSalt(10, (err, salt)=>{
@@ -35,7 +43,7 @@ router.get("/register",(req,res)=>{
                 res.send('user added: '+ JSON.stringify(result.get()) )
 
             }).catch(e=>{
-                res.send('err: '+ e )
+                res.status(500).send({error:e})
             });
 
 
@@ -56,16 +64,16 @@ router.get("/login",(req,res,next)=>{
     req.body.password = '123456';
 
     if(req.user){ //stored here
-        return res.send('Already logged in as '+req.user); 
+        return res.status(400).send('Already logged in as '+req.user); 
     }
 
     passport.authenticate('local',(err, user, info)=>{
 
         if (err) { return next(err); }
-        if (!user) {  return res.send('[!user] - '+ info.message); }
+        if (!user) {  return res.status(400).send('[!user] - '+ info.message); }
         req.logIn(user, err=> {
-            if (err) { console.log('login err: ',err); return res.send('login err'); }            
-            res.send('logged in as: ' + user); 
+            if (err) { console.log('login err: ',err); return res.status(400).send({error:err}); }            
+            res.send('Logged in as: ' + user); 
            
         });
 
@@ -80,9 +88,9 @@ router.get("/logout",(req, res, next)=>{
     req.session.destroy(err=>{
         if(!err){ 
             res.clearCookie('sessionName',{path:'/'}); 
-            return res.send('Logged out...')
+            return res.json({logout:true});
         }
-        res.send('Err Logging out...')
+        res.status(500).json({logout:false});
     })
     
 });

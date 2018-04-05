@@ -1,10 +1,26 @@
 
-const CommentsReducer =( state = null, action) =>{
+
+const CommentsReducer =( state = {
+    comments: []
+}, action) =>{
 
     switch(action.type) {
-        case 'PLACEHOLDER':
-            //state = {...};
-            break;
+        case 'ADD_COMMENT':
+        return {
+            ...state,
+            comments: [
+                action.payload,
+                ...state.comments
+            ]
+        };
+
+        case 'LOAD_COMMENTS':
+            return {
+                ...state,
+                comments: action.payload
+            };
+        
+            
     }
     return state;
 
