@@ -5,7 +5,6 @@ import styles from '../styles/Comment.scss';
 
 import CommentTextArea from './CommentTextArea';
 
-import CommentsReducer from './reducers/CommentsReducer'
 
 class Comment extends React.Component {
     constructor(){
@@ -67,10 +66,6 @@ class Comment extends React.Component {
 }
 
 
-const mapStateToProps = (state)=>( {
-    CommentsReducer: state.CommentsReducer
-});
 
-
-//export default Comment;
-export default connect(mapStateToProps, null)(Comment);
+export default Comment;
+//export default connect(mapStateToProps, null)(Comment);

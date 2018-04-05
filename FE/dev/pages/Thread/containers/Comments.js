@@ -2,7 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import axios from 'Axios';
 
-import Comment from '../components/CommentGroup';
+import CommentsReducer from '../reducers/CommentsReducer'
+import {loadComments, addComment} from '../actions';
+
+import CommentGroup from '../components/CommentGroup';
 import CommentTextArea from '../components/CommentTextArea';
 
 import styles from '../styles/Comments.scss';
@@ -18,46 +21,33 @@ class Comments extends React.Component {
         this.addNewComment = this.addNewComment.bind(this);
     }
     componentDidMount(){
-        let that = this;
+        axios.get('/api/thread/getall').then( response =>{           
+            console.log(response.data); this.props.loadComments(response.data); 
 
-        axios.get('/api/thread/getall')
-        .then(function (response) {
-          console.log(response.data);
- 
-            that.setState({
-                comments:response.data
-            })
-
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
           console.log(error);
         });
       
-
     }
 
     addNewComment(content){
-        let tempKey = '_'+this.state.comments.length;//rem//use response db id later
+        let tempKey = '_'+this.props.comments.length;//rem//use response db id later
         var newComment = {id: tempKey, content, replyTo: null, groupId: null, nrReplies: 0, userId: 1}
-
-        this.setState({
-            comments:[
-                newComment,
-                ...this.state.comments
-            ]
-        });
+        this.props.addComment(newComment);
 
     }
 
     render() {
-        const {comments} = this.state;
+        const {comments} = this.props;
+        console.log('comments-------- ',comments)
+
         return <div className = {styles.commentsWrapper}> 
             On Comments...
             <br /><br />
             <CommentTextArea addNewComment = {this.addNewComment} isVisible = {true}/><br />
 
             {comments.map( c => 
-                <Comment key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </Comment> 
+                <CommentGroup key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </CommentGroup> 
             )}
 
 
@@ -67,5 +57,20 @@ class Comments extends React.Component {
     }
 }
 
-export default Comments;
-//export default connect(null, null)(Comments);
+
+
+const mapStateToProps = (state)=>( {
+    comments: state.CommentsReducer.comments
+});
+const mapDispatchToProps = (dispatch)=>({
+    loadComments: comments =>
+        dispatch(loadComments(comments))
+    ,    
+    addComment: comment =>
+        dispatch(addComment(comment))
+    
+
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments);
