@@ -10,7 +10,13 @@ $topMenuHeight: 40px;
     border-bottom:1px solid $appTopMenu-border-color;
     height:$topMenuHeight;
     background:$appTopMenu-background-color;
-  
+    display:flex;
+    >div:nth-of-type(1){
+        width:calc(100% - #{$sideMenuWidth});
+    }
+    >div:nth-of-type(2){
+        flex:1;
+    }    
 }
 .app-wrapper{
 

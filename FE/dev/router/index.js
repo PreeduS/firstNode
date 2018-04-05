@@ -10,14 +10,22 @@ import styles from './AppRouter.scss';
 
 // / <NavLink exact activeClassName = {styles.routeActive} to="/Thread" >ThreadComponent</NavLink>
 
+import UserHeader from '../commons/components/UserHeader'
+
+
 const AppRouter = () =>(
     <Router>
         <div>
             <div className = {styles.appTopMenu}>
-                <NavLink exact  to="/Thread" >ThreadComponent</NavLink>
-                <NavLink exact  to="/Threads" >ThreadsComponent</NavLink>
-                <NavLink exact  to="/Register" >RegisterComponent</NavLink>
-                <NavLink exact  to="/" >null</NavLink>
+                <div>
+                    <NavLink exact  to="/Thread" >ThreadComponent</NavLink>
+                    <NavLink exact  to="/Threads" >ThreadsComponent</NavLink>
+                    <NavLink exact  to="/Register" >RegisterComponent</NavLink>
+                    <NavLink exact  to="/" >null</NavLink>
+                </div>
+                <div>
+                <UserHeader />
+                </div>
             </div>
            
             <div className = {styles.appWrapper}>

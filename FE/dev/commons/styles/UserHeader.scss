@@ -1,0 +1,29 @@
+.user-header{
+    border:1px solid gray;
+    display:flex;        
+    position:relative;
+    .left-content{
+        width:40px;
+        height:40px;    
+    }
+    .right-content{
+        flex:1;
+        display: flex;
+
+        >div{
+            margin:auto 0px;
+            cursor:pointer;
+            user-select: none; 
+        }
+
+    }
+
+    .drop-down-container{
+        position: absolute;
+        top:40px;
+        left:0px;
+        right:0px;
+
+    }
+
+}
