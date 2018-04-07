@@ -5,6 +5,8 @@ var path = require('path');
 var express = require('express');
 var session = require('express-session');
 
+const SequelizeConnection = require('../Models/SequelizeConnection');
+
 module.exports = (app) =>{
 
     app.use(bodyParser.json());    
@@ -12,15 +14,15 @@ module.exports = (app) =>{
 
     app.use(cookieParser());
     
-    //store
-    var MongoDBStore = require('connect-mongodb-session')(session);
-    var store = new MongoDBStore({
-        uri: require('../config').dbConnection,
-        databaseName: require('../config').dbName,
-        collection: 'mongoStore'        
-    });
-    store.on('error', err => console.log('MongoDBStore err: ',err) );
 
+    //store
+    var SequelizeStore = require('connect-session-sequelize')(session.Store);
+    var store = new SequelizeStore({
+        db: SequelizeConnection
+    });
+    
+
+   
     app.use(session({
         secret:'sc1234567',
         saveUninitialized:false,
@@ -29,9 +31,12 @@ module.exports = (app) =>{
         cookie:{
             maxAge:10*60*1000
         },
-        store:store
+       store: store
+
     }));
     
+    store.sync();
+
     app.use('/',(req,res,next)=>{
         //req.session.wqeqwe = wqeq
         //console.log('cookie: ',req.cookies);
@@ -57,11 +62,3 @@ module.exports = (app) =>{
     app.use("/",express.static(path.join(__dirname,"../public")));
     app.use("/",express.static(path.join(__dirname,"../FE/build")));
 }   
-
-
-/*
-app.use((req, res, next)=>{
-    req.someData="someData";
-    next();
-});
-*/

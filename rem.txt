@@ -16,6 +16,7 @@ connect-mongodb-session --save
 --------
 sequelize --save
 pg pg-hstore --save
+connect-session-sequelize --save
 
 ------------saveDev------------
 

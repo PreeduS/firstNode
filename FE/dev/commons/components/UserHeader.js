@@ -1,8 +1,81 @@
 import React from 'react';
+import axios from 'Axios';
 
 import styles from '../styles/UserHeader.scss';
 
 import Dropdown from './Dropdown';
+import Field from './Field';
+
+//temp
+class LoginForm extends React.Component{
+    constructor(){
+        super();
+        this.changeHandler = this.changeHandler.bind(this);
+        this.login = this.login.bind(this);
+
+        this.state = {
+            username:'',
+            password:'',
+            pending: false,
+            status:''
+        }
+    }
+
+    login(){
+        this.setState({pending:true});
+        const {username, password} = this.state;
+      
+        axios.post('/api/UserManager/login',{username, password}).then( result =>{           
+            console.log(result.data); 
+            this.setState({
+                pending:false,
+                status: result.data
+            });
+        }).catch(error => {
+            this.setState({
+                pending: false,
+                status: error.response.data.error,
+            });
+        });        
+    }  
+
+    changeHandler(value, mapTo){
+        this.setState({
+            [mapTo]:value
+        });
+    }
+
+    render(){
+        const {username, password, status} = this.state;
+        return(
+            <div>
+
+                <Field 
+                    type= "text" 
+                    label="Username" 
+                    errors = {null} 
+                    changeHandler = {this.changeHandler}
+                    mapTo = {'username'}
+                    value = {username}
+                />
+                <Field 
+                    type= "password" 
+                    label="Password" 
+                    errors = {null} 
+                    changeHandler = {this.changeHandler}
+                    mapTo = {'password'}
+                    value = {password}
+                />
+           
+                {status}
+                <br />
+                <button disabled = {this.state.pending} onClick = {this.login}>Login</button>
+            </div>
+        );
+    }
+}
+
+
 
 class UserHeader extends React.Component {
     constructor(){
@@ -36,7 +109,9 @@ class UserHeader extends React.Component {
                     <div onClick = {this.toogleDropdown}>&#9662;</div>            
                 </div>
                 <div className = {styles.dropDownContainer}>
-                    <Dropdown showDropdown = {showDropdown} onDropdownBlur = {this.dropdownBlur}/>
+                    <Dropdown showDropdown = {showDropdown} onDropdownBlur = {this.dropdownBlur}>
+                        <LoginForm />
+                    </Dropdown>
                 </div>
             </div>
         );

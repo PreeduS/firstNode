@@ -1,23 +1,37 @@
 import React from 'react';
 
-import styles from '../styles/Field.scss';
+//import styles from '../styles/Field.scss';
+import CommonField from '../../../commons/components/Field';
+
 
 class Field extends React.Component {
+    constructor(){
+        super();
+        //this.validationManager = this.validationManager.bind(this);
+    }
+    /*
+    validationManager(e, mapTo){
+        //var {validationManager, mapTo} = this.props;
+        validationManager(e.target.value, mapTo)
+    }*/
+
     render(){
-        const {label, type, validationManager, value, mapTo, errors} = this.props;
+        //const {validationManager, label, type, value, errors, mapTo} = this.props;
+        const {changeHandler, label, type, value, errors, mapTo, blurHandler} = this.props;
+
         return(
-            <div className = {styles.fieldContainer}>
-                <div className = {styles.leftContent}><span>{label}:</span></div>
-                <div className = {styles.rightContent}>
-                
-                <div className = {styles.inputContent}>
-                    <input type={type} onChange = {(e)=>validationManager(e.target.value,mapTo)}/> 
-                </div>
-                <div className = {styles.validationContent}><span>{value.length>0 && errors}</span></div>
-                </div>
-                
-            </div> 
+            <CommonField 
+                //changeHandler = {validationManager}
+                changeHandler = {changeHandler}
+                blurHandler = {blurHandler}
+                type = {type}
+                label = {label}
+                value = {value}
+                errors = {errors}
+                mapTo = {mapTo}
+            />
         );
+        
     }
 }
 

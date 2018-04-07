@@ -12,7 +12,14 @@ const userExists = async(username) =>{
     return u!==null;
     
 };
-router.get("/userExists", async(req,res)=>{ 
+router.get("/userExists", async(req,res)=>{
+    //temp
+    const sleep = time => new Promise( resolve => 
+        setTimeout(() => { resolve(); }, time)
+    );
+    await sleep(1);  
+
+
     let username = req.query.username;
     let exists = await userExists(username);
     res.send(exists);
@@ -56,24 +63,23 @@ router.get("/register", async(req,res)=>{
    
 });
 
-router.get("/login",(req,res,next)=>{ 
-
+router.post("/login",(req,res,next)=>{ 
 
     //User
-    req.body.username = 'uname4';
-    req.body.password = '123456';
+    //req.body.username = 'uname4';
+    //req.body.password = '123456';
 
     if(req.user){ //stored here
-        return res.status(400).send('Already logged in as '+req.user); 
+        return res.status(400).send({error:'Already logged in as '+req.user}); 
     }
 
     passport.authenticate('local',(err, user, info)=>{
 
         if (err) { return next(err); }
-        if (!user) {  return res.status(400).send('[!user] - '+ info.message); }
+        if (!user) {  return res.status(400).send({error: info.message}) }
         req.logIn(user, err=> {
-            if (err) { console.log('login err: ',err); return res.status(400).send({error:err}); }            
-            res.send('Logged in as: ' + user); 
+            if (err) { return res.status(400).send({error:err}); }            
+            res.send('Logged in as: ' + user.username); 
            
         });
 

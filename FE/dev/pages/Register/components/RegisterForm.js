@@ -1,9 +1,27 @@
 import React from 'react';
+import axios from 'Axios';
 
 import Field from './Field';
 
 import styles from '../styles/RegisterForm.scss';
 
+//temp
+const ThrottleRequest =  function(time){
+    this.time = time;
+    this.lastCallAt = 0;
+
+    return call => {
+        let dateNow = Date.now();
+        let diff = dateNow - this.lastCallAt
+
+        if(diff > this.time){
+            call();
+            this.lastCallAt =  dateNow;
+        }
+    }   
+}
+// this.throttle =  new ThrottleRequest(1000);
+// this.throttle( () =>{} );  
 
 class RegisterForm extends React.Component {
     constructor(){
@@ -19,8 +37,61 @@ class RegisterForm extends React.Component {
             pending: false          
         }
         this.validationManager = this.validationManager.bind(this);
+        this.changeHandler = this.changeHandler.bind(this);
+        this.blurHandler = this.blurHandler.bind(this);
+        this.register = this.register.bind(this);
+        this.doesUsernameExists = this.doesUsernameExists.bind(this);
+ 
+
     }
-    validationManager(value, mapTo){
+    
+    register(){
+        this.setState({pending:true});
+        //temp get       
+        axios.get('api/UserManager/register').then( result =>{           
+            console.log(result.data); 
+            this.setState({pending:false});
+        }).catch(error => {
+            console.log('err2 ', error.response);
+            this.setState({pending:false});
+        });        
+    }  
+    doesUsernameExists(username){
+        return axios.get('api/UserManager/userExists?username='+username);
+    }
+    blurHandler(value, mapTo){
+    
+        //if(!this.state.errors.username ){
+        
+
+                this.doesUsernameExists(value).then(result=>{
+                    let userExists = result.data;
+                   // if(userExists){
+
+                    this.setState({
+                        ...this.state,
+                        errors:{
+                            ...this.state.errors,
+                            usernameExists: userExists//'Username is taken' 
+                        }
+                    });
+                    this.validationManager(value,'username')
+                    //}   
+                }).catch(error => {
+                    console.log('err2 ', error.response);                   
+                });   
+          
+
+        //}
+
+    }
+
+    changeHandler(value, mapTo){
+        this.validationManager(value, mapTo);
+ 
+
+    }
+    validationManager(value, mapTo){                                            //split later, in changeHandler
         //var newErrors =  {...this.state.errors};
         var newErrors =  {};
         var newValues;
@@ -33,17 +104,25 @@ class RegisterForm extends React.Component {
             };
         }
 
+        //validations
+        //set usernameExists only on blur, reset on keyup
+        let keyupChange = mapTo === 'username' && value !== this.state.values.username;
+        if(  !keyupChange && this.state.errors.usernameExists){
+            newErrors.usernameExists = this.state.errors.usernameExists;
+        }
 
-        if(newValues.username.length < 4){newErrors.username = 'Min 4 chars'; }//else{newErrors.username = '';}
+        if( newErrors.usernameExists ){ newErrors.username = 'Username is taken'; }
+        else if(newValues.username.indexOf(' ') !== -1){newErrors.username = 'No whitespaces allowed'; }
+        else if(newValues.username.length < 4){newErrors.username = 'Min 4 chars'; }//else{newErrors.username = '';}
         
-        if(newValues.password.length < 6){
+
+        if(newValues.password.length < 6){  
             newErrors.password = 'Min 6 chars'; 
         }//else{newErrors.password = '';}
         
         if(newValues.password !== newValues.password2 ){
             newErrors.password2 = 'Passwords don\'t match '; 
         }//else{ newErrors.password2 = ''; }
-
 
 
         this.setState({
@@ -67,7 +146,8 @@ class RegisterForm extends React.Component {
                     label = "Username" 
                     type="text" 
                     errors = {errors.username} 
-                    validationManager = {this.validationManager}
+                    changeHandler = {this.changeHandler}
+                    blurHandler = {this.blurHandler}
                     value = {this.state.values.username}
                     mapTo = {'username'}
                 />
@@ -75,7 +155,7 @@ class RegisterForm extends React.Component {
                     label = "Password" 
                     type="password" 
                     errors = {errors.password}
-                    validationManager = {this.validationManager}
+                    changeHandler = {this.changeHandler}
                     value = {this.state.values.password}    
                     mapTo = {'password'}            
                 />
@@ -83,13 +163,16 @@ class RegisterForm extends React.Component {
                     label = "Password verify" 
                     type="password" 
                     errors = {errors.password2}
-                    validationManager = {this.validationManager}
+                    changeHandler = {this.changeHandler}
                     value = {this.state.values.password2}    
                     mapTo = {'password2'}            
                 />
 
                 <br />
-                <button disabled = {Object.keys(this.state.errors).length >0 && !this.state.pending } >
+                <button 
+                    disabled = {Object.keys(this.state.errors).length >0 || this.state.pending } 
+                    onClick = {this.register}           
+                >
                     Register
                 </button>
                 <br />

@@ -42,10 +42,7 @@ class Dropdown extends React.Component {
         return(
             <div ref = {this.dropdownRef}>
                 {showDropdown && <div className = {styles.dropDown} >
-                    dropdown
-                    <div>test</div>
-                    <div>test<div>test2</div></div>
-                    <div>test2<div>test2<div>test2</div></div></div>
+                    {this.props.children}
                 </div>}
             </div>
         );
