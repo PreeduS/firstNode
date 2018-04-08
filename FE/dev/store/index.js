@@ -5,11 +5,13 @@ import thunk from 'redux-thunk';
 
 
 import CommentsReducer from '../pages/Thread/reducers/CommentsReducer';
+import UserReducer from '../commons/reducers/UserReducer';
 
 
 const store = createStore(
     combineReducers({
-        CommentsReducer
+        CommentsReducer,
+        UserReducer
     }),
     {},
     applyMiddleware(logger,thunk,promise())

@@ -10,6 +10,15 @@ const db = mongoose.connection;
 db.on('error',err=>console.log('db err: ',err))
 db.once('open',()=>console.log('db connected'))
 
+
+//temp
+const sleep = time => new Promise( resolve => 
+    setTimeout(() => { resolve(); }, time)
+);
+app.use( async(req,res,next)=>{
+    await sleep(3000);  
+    next();
+});
 //Middleware
 require('./middleware')(app);
 

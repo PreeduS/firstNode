@@ -70,6 +70,11 @@ module.exports ={
         stats: "errors-only",
         historyApiFallback:true
     },
+    resolve:{
+        alias:{
+           '~': path.resolve(__dirname,'dev'),
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'dev/index.html'

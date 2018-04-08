@@ -13,12 +13,6 @@ const userExists = async(username) =>{
     
 };
 router.get("/userExists", async(req,res)=>{
-    //temp
-    const sleep = time => new Promise( resolve => 
-        setTimeout(() => { resolve(); }, time)
-    );
-    await sleep(1);  
-
 
     let username = req.query.username;
     let exists = await userExists(username);
@@ -88,7 +82,7 @@ router.post("/login",(req,res,next)=>{
 
 });
 
-router.get("/logout",(req, res, next)=>{ 
+router.post("/logout", (req, res, next)=>{ 
     req.logout();
     
     req.session.destroy(err=>{

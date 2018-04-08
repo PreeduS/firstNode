@@ -10,7 +10,7 @@ import styles from './AppRouter.scss';
 
 // / <NavLink exact activeClassName = {styles.routeActive} to="/Thread" >ThreadComponent</NavLink>
 
-import UserHeader from '../commons/components/UserHeader'
+import UserHeader from '../others/components/UserHeader';
 
 
 const AppRouter = () =>(
