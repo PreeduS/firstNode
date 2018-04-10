@@ -65,10 +65,7 @@ const mapDispatchToProps = (dispatch)=>({
     ,    
     addComment: comment =>
         dispatch(addComment(comment))
-    
-   // ,setActiveTextarea: id =>
-    //    dispatch(setActiveTextarea(id))
-    
+
 });
 
 

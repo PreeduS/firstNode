@@ -1,15 +1,8 @@
-//temp
 import React from 'react';
 
 const LoaderHoc = Component =>{
     return class Loader extends React.Component{
-
-        //check for styles props
-
-        //style = {{opacity:.3}}
-
-        render(){
-        
+        render(){  
             const loading = this.props.loading || false;
             
             if(loading){

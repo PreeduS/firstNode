@@ -5,23 +5,6 @@ import Field from './Field';
 
 import styles from '../styles/RegisterForm.scss';
 
-//temp
-const ThrottleRequest =  function(time){
-    this.time = time;
-    this.lastCallAt = 0;
-
-    return call => {
-        let dateNow = Date.now();
-        let diff = dateNow - this.lastCallAt
-
-        if(diff > this.time){
-            call();
-            this.lastCallAt =  dateNow;
-        }
-    }   
-}
-// this.throttle =  new ThrottleRequest(1000);
-// this.throttle( () =>{} );  
 
 class RegisterForm extends React.Component {
     constructor(){
@@ -42,7 +25,6 @@ class RegisterForm extends React.Component {
         this.register = this.register.bind(this);
         this.doesUsernameExists = this.doesUsernameExists.bind(this);
  
-
     }
     
     register(){
@@ -60,30 +42,22 @@ class RegisterForm extends React.Component {
         return axios.get('api/UserManager/userExists?username='+username);
     }
     blurHandler(value, mapTo){
+        this.doesUsernameExists(value).then(result=>{
+            let userExists = result.data;
+
+            this.setState({
+                ...this.state,
+                errors:{
+                    ...this.state.errors,
+                    usernameExists: userExists
+                }
+            });
+            this.validationManager(value,'username')
+            
+        }).catch(error => {
+            console.log('err2 ', error.response);                   
+        });   
     
-        //if(!this.state.errors.username ){
-        
-
-                this.doesUsernameExists(value).then(result=>{
-                    let userExists = result.data;
-                   // if(userExists){
-
-                    this.setState({
-                        ...this.state,
-                        errors:{
-                            ...this.state.errors,
-                            usernameExists: userExists//'Username is taken' 
-                        }
-                    });
-                    this.validationManager(value,'username')
-                    //}   
-                }).catch(error => {
-                    console.log('err2 ', error.response);                   
-                });   
-          
-
-        //}
-
     }
 
     changeHandler(value, mapTo){

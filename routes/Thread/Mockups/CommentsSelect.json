@@ -1,9 +1,0 @@
-[{"id":1,"content":"content...","replyTo":null,"groupId":null,"nrReplies":0,"userId": 1},
-{"id":2,"content":"content2...","replyTo":null,"groupId":null,"nrReplies":5,"userId": 1},
-{"id":3,"content":"content3...","replyTo":2,"groupId":2,"nrReplies":0,"userId": 1},
-{"id":4,"content":"content4...","replyTo":2,"groupId":2,"nrReplies":0,"userId": 1},
-{"id":5,"content":"content5...","replyTo":4,"groupId":2,"nrReplies":0,"userId": 1},
-{"id":8,"content":"content8...","replyTo":null,"groupId":null,"nrReplies":0,"userId": 1},
-{"id":9,"content":"content9...","replyTo":null,"groupId":null,"nrReplies":0,"userId": 1},
-{"id":10,"content":"content10...","replyTo":null,"groupId":null,"nrReplies":0,"userId": 1}]
-

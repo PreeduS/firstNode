@@ -26,8 +26,7 @@ const setActiveTextarea = id => state =>{
             active: isActive
         }
 
-    };
-    console.log('newstate -----------------', newState.activeTextarea)
+    }; 
     return newState;
 }
 
@@ -38,16 +37,7 @@ const ThreadReducer =( state = initialState.thread, action) =>{
         
         case actionTypes.setActiveTextarea:
             return setActiveTextarea(action.payload)(state);
-        
-           /* return {
-                ...state,
-                activeTextarea: {
-                    ...state.activeTextarea,
-                    currentId: action.payload//,
-                   // active: action.payload.active,
-                }
-            }*/
-          
+                  
     }
     return state;
 

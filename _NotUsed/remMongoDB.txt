@@ -1,0 +1,62 @@
+
+
+
+----------------------MongoDBStore----------------------
+var MongoDBStore = require('connect-mongodb-session')(session);
+var store = new MongoDBStore({
+    uri: require('../config').dbConnection,
+    databaseName: require('../config').dbName,
+    collection: 'mongoStore'        
+});
+store.on('error', err => console.log('MongoDBStore err: ',err) );
+
+app.use(session({
+    ...
+    store:store
+}));
+
+----------------------mongoDB----------------------
+
+
+mongod --directoryperdb --dbpath D:\mongoDB\data\db --logpath D:\mongoDB\log\mongo.log --logappend --install
+net start MongoDB
+net stop MongoDB
+
+//mongod            //start db
+mongo               //connect to db
+show dbs
+show collections
+use testDbName // switch/create
+
+//use testDb; db.createCollection('articles');
+//{fName:"test",lName:"ltest",list:["l1","l2"]}
+
+db.createUser({
+    user:'admin',
+    pwd:'123456',
+    roles:['dbAdmin']
+})
+
+db.createCollection('cUsers')
+db.cUsers.insert( {fName:"user1",lName:"luser1"} )
+db.cUsers.insert( [{fName:"user2",lName:"luser2"},{fName:"user2",lName:"luser2",age:"30"}] )
+db.cUsers.find()
+db.cUsers.find().pretty()
+db.cUsers.update({fName:"user2"},{newValue:"will replace all"})
+db.cUsers.update({fName:"user2"},{$set:{newValue:"will append this"}})      //append or modify
+db.cUsers.update({fName:"user2"},{$inc:{age:5}})                            //inc with 5 an int field
+
+db.cUsers.update({fName:"user2"},{$unset:{newValue:1}})                     //del field
+
+db.cUsers.update({fName:"not found"},{newValue:"new value"},{upsert:true})  //upsert: if not exist->insert
+
+db.cUsers.update({fName:"user2"},{$rename:{"age":"age2"}})                     //rename field
+db.cUsers.remove({fName:"user2"})                                              //remove all, not only first
+db.cUsers.remove({fName:"user2"},{justOne:true})                
+
+db.cUsers.find({fName:"user2"})                             
+db.cUsers.find({$or:[{fName:"user1"},{fName:"user2"}]})                             
+
+db.cUsers.find().count()
+db.cUsers.find().limit(4)
+db.cUsers.find().sort({fName:1})

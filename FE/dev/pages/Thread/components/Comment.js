@@ -20,7 +20,6 @@ class Comment extends React.Component {
     }
 
     componentWillReceiveProps(){
-        //&& != null
         if( this.props.thread.activeTextarea !== this.props.id || this.props.thread.activeTextarea === null){
             this.setState({
                 isReplyVisible: false
@@ -33,30 +32,11 @@ class Comment extends React.Component {
         let nrVisibleRplies = replies ? replies.length : 0;
         return `---[t]${nrReplies} - [v]${nrVisibleRplies}`;
     }
+
     toggleReply(){
-
-        //if(this.props.thread.activeTextarea !== this.props.id || this.props.thread.activeTextarea === null){
-           
-
-    
-        //}
-        //let isVisible = !this.state.isReplyVisible;
-        /*
-            if(this.props.id !== this.props.thread.activeTextarea){
-                var isVisible = false;
-            }else{
-                var isVisible = true;
-            }
-        
-            console.log('2 --- ',this.props.id , this.props.thread.activeTextarea,'isVisible ', isVisible);
-            this.setState({
-                isReplyVisible: isVisible
-            });
-*/
-            this.props.setActiveTextarea(this.props.id);
-       
-        
+        this.props.setActiveTextarea(this.props.id);   
     }
+
     addNewReply(value){  
         const {id, isReply, threadId} = this.props;
         const reply = {replyTo: id,content:value, threadId};
@@ -66,7 +46,7 @@ class Comment extends React.Component {
 
     render(){
         var {content, isReply, userId, nrReplies, replies} = this.props;
-       // var isVisible = this.state.isReplyVisible; 
+
         var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id && 
             this.props.thread.activeTextarea.active) ? true : false;
 

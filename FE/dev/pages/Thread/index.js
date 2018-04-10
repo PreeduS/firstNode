@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 
 import Comments from './containers/Comments';
@@ -20,4 +19,3 @@ class Thread extends React.Component {
 }
 
 export default Thread;
-//export default connect(null, null)(Thread);
