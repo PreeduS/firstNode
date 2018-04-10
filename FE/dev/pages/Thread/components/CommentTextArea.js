@@ -20,16 +20,14 @@ class CommentTextArea extends React.Component {
     }
 
     resizeTextarea(el){
-
         let elem = el.target;
-       //console.log('resizeTextarea scrollHeight : ',elem.scrollHeight)
-       console.log(' = ', this.prevHeight ,  elem.scrollHeight)
+        //console.log('resizeTextarea scrollHeight : ',elem.scrollHeight)
+        //console.log(' = ', this.prevHeight ,  elem.scrollHeight)
 
-       if( this.prevHeight !== null && this.prevHeight !== elem.scrollHeight){
-        console.log('c here')
-       }
-       
-
+        if( this.prevHeight !== null && this.prevHeight !== elem.scrollHeight){
+        //console.log('c here')
+        }
+        
 
         elem.style.height = 'auto';
         elem.style.height = elem.scrollHeight;
@@ -57,7 +55,10 @@ class CommentTextArea extends React.Component {
 
         return (           
             <div className = {styles.commentTextAreaWrapper}>
-                <textarea onChange = {(e)=> {this.resizeTextarea(e); this.updateTextAreaValue(e); } }  value = {this.state.textarea}> </textarea>
+                <textarea 
+                    onChange = {(e)=> {this.resizeTextarea(e); this.updateTextAreaValue(e);} }  
+                    value = {this.state.textarea}> 
+                </textarea>
                 <br />
                 <button onClick = {this.addNewComment} disabled = {isSubmitDisabled}>{label}</button>
             </div>

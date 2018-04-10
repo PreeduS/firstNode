@@ -80,56 +80,72 @@ router.get("/getAll",(req,res)=>{
     const getResponseStructure = result =>{
         let response = [];
         let repliesArr = [];
-        
+        let lastAdded = null;
         result.forEach(el => {
 
             if(el.groupId === null){
                 response.push(el);
+                repliesArr = [];
 
             }else if(response.length){
-                let lastAdded = response[response.length-1];
+                lastAdded = response[response.length-1];
                 if(el.groupId === lastAdded.id){
                     //if(lastAdded.replies === undefined){ lastAdded.replies = []; }//lastAdded.replies.push(el);
-                    repliesArr.push(el);              
+                    //repliesArr.push(el);              
+                    repliesArr = [...repliesArr,el];              
                     lastAdded.replies = repliesArr;
-                }else{
-                    repliesArr = [];
-                }
+                }//else{
+                   // repliesArr = [];
+                //}
             }
             
             
         });
         return response;
     }
-    /*[tempTag]*/res.send(   getResponseStructure(require('./Mockups/CommentsSelect.json'))    ) ;return; 
+    /*[tempTag]*/ //res.send(   getResponseStructure(require('./Mockups/CommentsSelect.json'))    ) ;return; 
 
     connection.query("select * from getComments(?)",{replacements: [threadId] }).then(result => {
       
-        
- /*       
-        let response = [];
-        result[0].forEach(el => {
-
-            if(el.groupId === null){
-                response.push(el);
-
-            }else if(response.length){
-                let lastAdded = response[response.length-1];
-                if(el.groupId === lastAdded.id){
-                    if(lastAdded.replies === undefined){ lastAdded.replies = []; }
-                    lastAdded.replies.push(el)
-                }
-            }
-            
-            
-        });
-        */
+       
         let response = getResponseStructure(result[0]);
         res.send(response);
       })
 });
 
+router.post('/addReply',  async(req, res) =>{
+    let content = req.body.content;
+    let replyTo = req.body.replyTo;
+    let threadId = req.body.threadId;
+    let userId = 1; //session later
+ 
 
+    let result = await Comment.findOne({where: {id: replyTo,threadId: threadId}})
+    .catch(err =>{
+        return res.status(400).send(err.errors);
+    });
+    
+    let groupId = result.groupId === null ? result.id : result.groupId;
+ 
+    result = await Comment.create({
+        content: content,
+        replyTo: replyTo,
+        groupId: groupId,
+        threadId: 1,
+        nrReplies: 0,
+        userId: userId
+    })
+    .catch(err =>{
+       
+        return res.status(400).send(err.errors);
+       
+    });
+
+   
+
+    res.send(result);
+
+});
 
 module.exports = router;
 

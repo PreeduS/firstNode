@@ -36,7 +36,7 @@ class Threads extends React.Component {
         let {threads} = this.state
         return(
             <div>
-                {threads.length && threads.map(t => 
+                {threads.length > 0 && threads.map(t => 
                     <Thread key = {t.id} {...t}/>
                 )}
 

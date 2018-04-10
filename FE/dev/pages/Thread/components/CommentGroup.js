@@ -10,15 +10,13 @@ class CommentGroup extends React.Component {
         this.addNewComment = this.addNewComment.bind(this);
     }
 
-    //rem on add new reply, pass "this.props.comment" up with the replies[] updated
     addNewComment(value){
-
         this.props.addNewComment(value);
     }
 
     render() {
         const {replies} = this.props.comment;
-
+        //console.log(this.props.comment.id, ' replies  ',replies)
         return (
             <div style={{border:'1px solid gray'}}>   
                 <Comment {...this.props.comment} isReply = {false} />
