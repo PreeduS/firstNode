@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 
-
+const repo = rootRequire('BE/repos/Thread');
 
 /*
 const Sequelize = require('sequelize');
@@ -76,8 +76,8 @@ router.get("/getAll",(req,res)=>{
     let threadId = 1;
 
     
-
-    const getResponseStructure = result =>{
+/*
+    const getCommentsStructure = result =>{
         let response = [];
         let repliesArr = [];
         let lastAdded = null;
@@ -102,13 +102,15 @@ router.get("/getAll",(req,res)=>{
             
         });
         return response;
-    }
-    /*[tempTag]*/ //res.send(   getResponseStructure(require('./Mockups/CommentsSelect.json'))    ) ;return; 
+    }*/
+    /*[tempTag]*/ //res.send(   getCommentsStructure(require('./Mockups/CommentsSelect.json'))    ) ;return; 
 
     connection.query("select * from getComments(?)",{replacements: [threadId] }).then(result => {
       
        
-        let response = getResponseStructure(result[0]);
+        //let response = getCommentsStructure(result[0]);
+        let response = repo.getAll(result[0]);
+        
         res.send(response);
       })
 });

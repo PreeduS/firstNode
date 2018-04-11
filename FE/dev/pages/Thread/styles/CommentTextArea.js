@@ -1,9 +1,10 @@
-@import '../../../commons/styles/variables';
+import styled from 'styled-components';
+import * as variables from '~/commons/styles/variables';
 
-.commentTextArea-wrapper{
+export const CommentTextAreaWrapper = styled.div`
     textarea{
         background-color: transparent;
-        border: 1px solid $mainContainer-border-color;
+        border: 1px solid ${variables.mainContainerBorderColor};
         outline:none;
         resize:none;
         width:100%;
@@ -12,11 +13,8 @@
         min-height:60px;
         max-height:140px;
         overflow: hidden;
-
         padding:10px 5px;
 
-        &:focus{
-            resize:vertical;
-        }
+
     }
-}
+`;

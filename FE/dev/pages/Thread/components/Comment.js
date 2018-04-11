@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import styles from '../styles/Comment.scss';
+import * as styles from '../styles/Comment.js';
 
 import CommentTextArea from './CommentTextArea';
 import ThreadReducer from '../reducers/ThreadReducer';
@@ -11,7 +11,6 @@ import {addReply, setActiveTextarea} from '../actions';
 class Comment extends React.Component {
     constructor(){
         super();
-        this.loadMoreComments = this.loadMoreComments.bind(this);
         this.toggleReply = this.toggleReply.bind(this);
         this.addNewReply = this.addNewReply.bind(this);
         this.state = {
@@ -27,11 +26,6 @@ class Comment extends React.Component {
         }
     }
 
-    loadMoreComments(nrReplies, replies){
-        if(nrReplies === 0){return ''; }
-        let nrVisibleRplies = replies ? replies.length : 0;
-        return `---[t]${nrReplies} - [v]${nrVisibleRplies}`;
-    }
 
     toggleReply(){
         this.props.setActiveTextarea(this.props.id);   
@@ -57,33 +51,41 @@ class Comment extends React.Component {
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur	`;
         content = content + ' - ' + tempc;// + tempc.substr(0, Math.floor(Math.random()*300+60) )
 
-        var loadMoreComments = this.loadMoreComments(nrReplies, replies);
+  
+
 
         return(
-            <div style={{border:'1px solid gray'}} className = {styles.commentsWrapper + ' ' + ( isReply? styles.reply:'' )}>
-                <div className = {styles.group}>
-                    <div className = {styles.container}>			
-                        <div className =  {styles.contentLeft}><div className = {styles.logo}></div></div>
-                        <div className = {styles.contentRight}>
-                            <div className = {styles.header}>
-                                <div className = {styles.username}>userId: {userId} </div>
-                            </div>
-                            <div className = {styles.content}>
-                                {content}  {loadMoreComments}
-                            </div>
-                            <div>
+            <styles.CommentsWrapper  isReply = {isReply}>
+                <styles.Group>
+                    <styles.Container>			
+                        <styles.ContentLeft>
+                            <styles.Logo></styles.Logo>
+                        </styles.ContentLeft>
+                        <styles.ContentRight>
+                            <styles.Header>
+                                <styles.Username>userId: {userId} </styles.Username>
+                            </styles.Header>
+                            <styles.Content >
+                                {content}
+                            </styles.Content>
+                            <styles.Footer>
                                 <b onClick = {this.toggleReply}>Reply</b> <br />
+
+                            </styles.Footer>
+                            <div>
                                 <CommentTextArea 
                                     isVisible = {isVisible} 
                                     isReply={true} 
                                     addNewComment = {this.addNewReply}
                                 />
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </styles.ContentRight>
+                    </styles.Container>
+                </styles.Group>
+            </styles.CommentsWrapper>
         );
+  
+
     }
 
 }

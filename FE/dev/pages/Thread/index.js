@@ -4,16 +4,16 @@ import React from 'react';
 import Comments from './containers/Comments';
 import Content from './components/Content';
 
-import styles from './styles/Thread.scss';
+import * as styles from './styles/Thread';
 
 
 class Thread extends React.Component {
     render() {
         return (
-            <div className = {styles.threadWrapper}>
+            <styles.ThreadWrapper>
                 <Content />
                 <Comments />
-            </div>
+            </styles.ThreadWrapper>
         );
     }
 }

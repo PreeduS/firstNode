@@ -1,15 +1,9 @@
 import React from 'react';
-
-import styles from '../styles/CommentTextArea.scss';
+import * as styles from '../styles/CommentTextArea';
 
 class CommentTextArea extends React.Component {
     constructor(){
         super();
-        this.textareaRef = null;
-        this.setTextareaRef = el =>{  //  console.log('ref: ',el)
-            his.textareaRef = el;
-            // ref = {this.setTextareaRef}
-        }
         this.resizeTextarea = this.resizeTextarea.bind(this);
         this.addNewComment = this.addNewComment.bind(this);
         this.prevHeight = null;
@@ -21,18 +15,8 @@ class CommentTextArea extends React.Component {
 
     resizeTextarea(el){
         let elem = el.target;
-        //console.log('resizeTextarea scrollHeight : ',elem.scrollHeight)
-        //console.log(' = ', this.prevHeight ,  elem.scrollHeight)
-
-        if( this.prevHeight !== null && this.prevHeight !== elem.scrollHeight){
-        //console.log('c here')
-        }
-        
-
         elem.style.height = 'auto';
         elem.style.height = elem.scrollHeight;
-
-        this.prevHeight = elem.scrollHeight;
     }
     updateTextAreaValue(el){
         let value = el.target.value;
@@ -54,14 +38,14 @@ class CommentTextArea extends React.Component {
         }
 
         return (           
-            <div className = {styles.commentTextAreaWrapper}>
+            <styles.CommentTextAreaWrapper>
                 <textarea 
-                    onChange = {(e)=> {this.resizeTextarea(e); this.updateTextAreaValue(e);} }  
+                    onChange = {e=> {this.resizeTextarea(e); this.updateTextAreaValue(e);} }  
                     value = {this.state.textarea}> 
                 </textarea>
                 <br />
                 <button onClick = {this.addNewComment} disabled = {isSubmitDisabled}>{label}</button>
-            </div>
+            </styles.CommentTextAreaWrapper>
         );
     }
 }

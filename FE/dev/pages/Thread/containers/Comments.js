@@ -9,7 +9,7 @@ import {loadComments, addComment } from '../actions';
 import CommentGroup from '../components/CommentGroup';
 import CommentTextArea from '../components/CommentTextArea';
 
-import styles from '../styles/Comments.scss';
+import * as styles from '../styles/Comments.js';
 
 
 class Comments extends React.Component {
@@ -37,29 +37,29 @@ class Comments extends React.Component {
         //console.log('comments: ',comments)
         console.log('activeTextarea: ',this.props.thread.activeTextarea)
 
-        return <div className = {styles.commentsWrapper}> 
-            On Comments...
-            <br /><br />
-            <CommentTextArea addNewComment = {this.addNewComment} isVisible = {true}/><br />
+        return (
+            <styles.CommentsWrapper> 
+                On Comments...
+                <br /><br />
+                <CommentTextArea addNewComment = {this.addNewComment} isVisible = {true}/><br />
 
-            {comments.map( c => 
-                <CommentGroup key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </CommentGroup> 
-            )}
+                {comments.map( c => 
+                    <CommentGroup key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </CommentGroup> 
+                )}
 
-
-            
-        </div>
+            </styles.CommentsWrapper>
+        );
 
     }
 }
 
 
 
-const mapStateToProps = (state)=>( {
+const mapStateToProps = state =>( {
     comments: state.CommentsReducer,
     thread: state.ThreadReducer
 });
-const mapDispatchToProps = (dispatch)=>({
+const mapDispatchToProps = dispatch => ({
     loadComments:() =>
         dispatch(()=> loadComments()(dispatch))
     ,    

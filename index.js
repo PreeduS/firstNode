@@ -24,7 +24,6 @@ app.use(passport.session());
 require('./BE/main-routes')(app);
 
 
-//console.log('---------------------------------------------------------------', process.env.NO_DB)
 
 app.listen(2000, ()=>{
     console.log("app started...");

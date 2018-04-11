@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index",
-    "start-noDB": "set NO_DB=true &&  nodemon index",
-    "start-fe": "npm --prefix ./FE run webpack"
+    "start-noDB": "set NO_DB=true && nodemon index",
+    "start-fe": "npm --prefix ./FE run webpack",
+    "all": "npm-run-all --parallel start start-fe",
+    "all-noDB": "set NO_DB=true && npm-run-all --parallel start start-fe"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +31,7 @@
     "sequelize": "^4.37.5"
   },
   "devDependencies": {
-    "nodemon": "^1.17.1"
+    "nodemon": "^1.17.1",
+    "npm-run-all": "^4.1.2"
   }
 }
