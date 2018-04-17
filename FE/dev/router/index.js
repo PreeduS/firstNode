@@ -2,10 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
 
-import ThreadComponent from '../pages/Thread';
-import ThreadsComponent from '../pages/Threads';
-import RegisterComponent from '../pages/Register';
-import UsersComponent from '../pages/Users';
+import routes from './routes';
 
 import styles from './AppRouter.scss';
 
@@ -19,10 +16,9 @@ const AppRouter = () =>(
         <div>
             <div className = {styles.appTopMenu}>
                 <div>
-                    <NavLink exact  to="/Thread" >ThreadComponent</NavLink>
-                    <NavLink exact  to="/Threads" >ThreadsComponent</NavLink>
-                    <NavLink exact  to="/Register" >RegisterComponent</NavLink>
-                    <NavLink exact  to="/Users" >UsersComponent</NavLink>
+                    {routes.map( (route, index) => 
+                         <NavLink key= {index} exact to={route.path}>{route.label}</NavLink>
+                    )}
                     <NavLink exact  to="/" >null</NavLink>
                 </div>
                 <div>
@@ -33,18 +29,17 @@ const AppRouter = () =>(
             <div className = {styles.appWrapper}>
                 <div className = {styles.appMainContainer}>
                     <Switch >
-                        <Route path="/Thread" component = {ThreadComponent} />
-                        <Route path="/Threads" component = {ThreadsComponent} />
-                        <Route path="/Register" component = {RegisterComponent} />
-                        <Route path="/Users" component = {UsersComponent} />
+                        {routes.map( (route, index) => 
+                            <Route key= {index} path={route.path} component = {route.component} />
+                        )}                        
                         <Route path="/" render = {()=> <div>Null /</div>} />
                     </Switch> 
                 </div>
                 <div className = {styles.appSideMenu}>
-                <Route path="/" render = {()=> 
-                        <div>Common </div>
-                    } 
-                />
+                    <Route path="/" render = {()=> 
+                            <div>Common </div>
+                        } 
+                    />
                 </div>
             </div>
 

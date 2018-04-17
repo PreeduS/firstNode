@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
-    "start-noDB": "set NO_DB=true && nodemon index",
+    "start-be": "nodemon index",
     "start-fe": "npm --prefix ./FE run webpack",
-    "all": "npm-run-all --parallel start start-fe",
-    "all-noDB": "set NO_DB=true && npm-run-all --parallel start start-fe"
+    "all": "npm-run-all --parallel start-be start-fe",
+    "all-noDB": "set NO_DB=true && npm-run-all --parallel start-be start-fe"
   },
   "author": "",
   "license": "ISC",
