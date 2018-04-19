@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes'
-import axios from 'Axios';
+import axios from 'axios';
 
 
 export const loadComments = () => dispatch =>{

@@ -6,5 +6,5 @@ import UserReducer from '../commons/reducers/UserReducer';
 export default ({
     CommentsReducer,
     ThreadReducer,
-    UserReducer    
+    UserReducer
 });

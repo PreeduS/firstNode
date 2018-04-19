@@ -4,10 +4,13 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const entry = './dev';
 const output = './build';
-const isProd = false;//temp
+const isProd = false;//temp //process.env.NODE_ENV
+
+
 
 module.exports = {
     entry:{
@@ -63,8 +66,3 @@ module.exports = {
     ]:[])
 
 }
-
-/*{
-    test:/\.html$/,
-    use : 'html-loader'
-},*/

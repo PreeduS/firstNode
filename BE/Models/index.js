@@ -8,11 +8,13 @@ const connection = new Sequelize('first_db', 'postgres', '123456', {
     //port: 1234
 });
 */
+
 connection.authenticate().then(() => {
     console.log('Connection has been established successfully.');
 }).catch(err => {
-    console.error('Unable to connect to the database:', err);
+    console.error('Unable to connect to the database:', err.name);
 });
+
 
 //models
 const Comment = require('./CommentModel')(connection);

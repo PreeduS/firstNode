@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import axios from 'Axios';
+import axios from 'axios';
 
 import CommentsReducer from '../reducers/CommentsReducer'
 import ThreadReducer from '../reducers/ThreadReducer'

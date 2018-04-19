@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'Axios';
+import axios from 'axios';
 
 import Field from '~/commons/components/Field';
 
@@ -24,8 +24,8 @@ class LoginForm extends React.Component{
         const {username, password} = this.state;
         const {login} = this.props;
 
-        services.login(username, password).then( result =>{           
-            console.log(result.data); 
+        services.login(username, password).then( result =>{
+            console.log(result.data);
             this.setState({
                 pending:false,
                 status: result.data
@@ -36,9 +36,9 @@ class LoginForm extends React.Component{
                 pending: false,
                 status: error.response.data.error,
             });
-        });    
+        });
 
-    }  
+    }
 
     changeHandler(value, mapTo){
         this.setState({
@@ -51,23 +51,23 @@ class LoginForm extends React.Component{
         return(
             <div>
 
-                <Field 
-                    type= "text" 
-                    label="Username" 
-                    errors = {null} 
+                <Field
+                    type= "text"
+                    label="Username"
+                    errors = {null}
                     changeHandler = {this.changeHandler}
                     mapTo = {'username'}
                     value = {username}
                 />
-                <Field 
-                    type= "password" 
-                    label="Password" 
-                    errors = {null} 
+                <Field
+                    type= "password"
+                    label="Password"
+                    errors = {null}
                     changeHandler = {this.changeHandler}
                     mapTo = {'password'}
                     value = {password}
                 />
-           
+
                 {status}
                 <br />
                 <button disabled = {this.state.pending} onClick = {this.login}>Login</button>

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styles from '../styles/Dropdown.scss';
 
 
@@ -16,17 +15,17 @@ class Dropdown extends React.Component {
         var clickedInside = false;
 
         while(target.parentNode !== null){
-            target = target.parentNode;       
+            target = target.parentNode;
             if(target === dropDownParentNode){
                 clickedInside = true; break;
-            }       
+            }
         }
-        if(!clickedInside){ 
+        if(!clickedInside){
             this.props.onDropdownBlur(e);
         }
 
     }
-    
+
     componentDidMount(){
         window.addEventListener('click',this.handleClick)
     }
@@ -36,7 +35,6 @@ class Dropdown extends React.Component {
 
     render(){
         const {showDropdown} = this.props;
-       
 
 
         return(
