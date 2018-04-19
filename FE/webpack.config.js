@@ -1,69 +1,35 @@
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+//plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports ={
+const entry = './dev';
+const output = './build';
+const isProd = false;//temp
 
+module.exports = {
     entry:{
-        index:'./dev/index.js'
+        index: entry
     },
     output:{
-        path: path.resolve(__dirname,'build'),
+        path: path.resolve(__dirname, output),
         filename:'[name].js',
         publicPath:'/'
     },
 
     module:{
         rules:[
-            {
-                test:/\.scss$/,
-                use: [
-                    {loader:'style-loader'},
-                    {
-                        loader:'css-loader',
-                        options:{
-                            modules: true,
-                            camelCase: true,
-                            localIdentName: '[name]__[local]__[hash:base64:8]'
-                        },
-                    },
-                    {loader:'sass-loader'},
-                ],
-
-            },
-            {
-                test:/\.js$/,
-                exclude:/node_modules/,
-                use : [{
-                    loader:'babel-loader',
-                    options:{
-
-                        presets: ['env','stage-2','react']
-                    }
-                }]
-            },
-            {
-                test:/\.html$/,
-                use : 'html-loader'
-            },
-            {
-                test:/\.(jpg|png)$/,
-                use : [{
-                    loader:'file-loader',
-                    options:{
-                        name:'[name].[ext]',
-                        outputPath:'public/',
-                        //publicPath:'public/'
-                    }
-                }]
-            }
-
+            require('./webpack.config/loaders/css'),
+            require('./webpack.config/loaders/scss'),
+            require('./webpack.config/loaders/babel'),
+            require('./webpack.config/loaders/file'),
         ]
     },
-    devtool: "cheap-module-eval-source-map",
+    devtool: isProd ? 'source-map' : 'eval-source-map',
     devServer:{
-        contentBase: "./build",
+        contentBase: output,
         inline: true,
         hot: false,
         port: 8080,
@@ -72,14 +38,33 @@ module.exports ={
     },
     resolve:{
         alias:{
-           '~': path.resolve(__dirname,'dev'),
+           '~': path.resolve(__dirname, entry),
         }
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'dev/index.html'
+            template: entry+ '/index.html',
+            minify:{
+                collapseWhitespace: isProd
+            }            
         }),
-        new CleanWebpackPlugin(['build/*.*'])
-    ]
+        new CleanWebpackPlugin([output+'/*.*']),
+        new ExtractTextPlugin({
+            filename: 'styles.css',
+            disable: !isProd        //not compatible with React Hot Loader
+        }),   
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': !isProd ? '"development"' : '"production"'
+        }),             
+    ].concat(!isProd ? [
+        new UglifyJsPlugin({
+            sourceMap: true
+        })
+    ]:[])
 
 }
+
+/*{
+    test:/\.html$/,
+    use : 'html-loader'
+},*/
