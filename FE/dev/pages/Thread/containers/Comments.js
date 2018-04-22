@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
 
 import CommentsReducer from '../reducers/CommentsReducer'
 import ThreadReducer from '../reducers/ThreadReducer'
@@ -11,40 +10,37 @@ import CommentTextArea from '../components/CommentTextArea';
 
 import * as styles from '../styles/Comments.js';
 
-
 class Comments extends React.Component {
     constructor(){
         super();
-        this.state = {
-            comments:[]
-        }
 
         this.addNewComment = this.addNewComment.bind(this);
     }
     componentDidMount(){
-        this.props.loadComments(); 
+        this.props.loadComments();
     }
-    //edit here rem
-    addNewComment(content){
-        let tempKey = '_'+this.props.comments.length;//rem//use response db id later
-        var newComment = {id: tempKey, content, replyTo: null, groupId: null, nrReplies: 0, userId: 1}
-        this.props.addComment(newComment);
 
+    addNewComment(content){
+        const threadId = 1; //temp ----------------
+        const comment = {content, threadId};
+        this.props.addComment(comment);
     }
 
     render() {
-        const {comments} = this.props;
-        //console.log('comments: ',comments)
-        console.log('activeTextarea: ',this.props.thread.activeTextarea)
+        const commentsData = this.props.comments.data;
 
         return (
-            <styles.CommentsWrapper> 
+            <styles.CommentsWrapper>
                 On Comments...
                 <br /><br />
-                <CommentTextArea addNewComment = {this.addNewComment} isVisible = {true}/><br />
+                <CommentTextArea addCommentOrReply = {this.addNewComment} isVisible = {true}/><br />
 
-                {comments.map( c => 
-                    <CommentGroup key = {c.id}  comment = {c} addNewComment = {this.addNewComment}> </CommentGroup> 
+                {commentsData.length > 0 && commentsData.map( c =>
+                    <CommentGroup
+                        key = {c.id}
+                        comment = {c}
+                        addNewComment = {this.addNewComment}
+                    />
                 )}
 
             </styles.CommentsWrapper>
@@ -62,9 +58,9 @@ const mapStateToProps = state =>( {
 const mapDispatchToProps = dispatch => ({
     loadComments:() =>
         dispatch(()=> loadComments()(dispatch))
-    ,    
+    ,
     addComment: comment =>
-        dispatch(addComment(comment))
+        dispatch(() => addComment(comment)(dispatch) )
 
 });
 

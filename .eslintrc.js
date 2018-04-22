@@ -43,7 +43,7 @@ module.exports = {
         /*Variables*/
         "no-shadow-restricted-names":2,
         "no-undef":2,   
-        "no-unused-vars":["warn",{"varsIgnorePattern":"^[Rr]eact$"}], 
+        "no-unused-vars":["warn",{"varsIgnorePattern":"^([Rr]eact)|([A-Z]{1}\\w*Reducer)$"}], 
         "no-use-before-define":1,
         /*Stylistic Issues*/         
         "no-mixed-spaces-and-tabs":1,
@@ -56,7 +56,10 @@ module.exports = {
         "require-yield":1,
         /*React*/     
         "react/jsx-uses-vars": 2,    
+        "react/jsx-uses-react": 2,    
         "react/no-unused-prop-types:": 0,    
+
+        "react/prop-types":0,
 
     },
     //allow "no-undef"
@@ -68,7 +71,7 @@ module.exports = {
         
     },
     extends:[
-        //"plugin:react/recommended",
+        "plugin:react/recommended",
         //"airbnb"
     ],
     plugins:[

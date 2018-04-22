@@ -6,9 +6,10 @@ const initialState = {
     thread:{
         activeTextarea: {currentId: null, active: false}
     }
-   
+
 }
 
+//set what comment/reply textarea is visible
 const setActiveTextarea = id => state =>{
     let prevId = state.activeTextarea.currentId;
     let isActive = state.activeTextarea.active;
@@ -26,7 +27,7 @@ const setActiveTextarea = id => state =>{
             active: isActive
         }
 
-    }; 
+    };
     return newState;
 }
 
@@ -34,10 +35,8 @@ const setActiveTextarea = id => state =>{
 const ThreadReducer =( state = initialState.thread, action) =>{
 
     switch(action.type) {
-        
         case actionTypes.setActiveTextarea:
             return setActiveTextarea(action.payload)(state);
-                  
     }
     return state;
 

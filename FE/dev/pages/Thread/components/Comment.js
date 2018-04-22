@@ -13,36 +13,24 @@ class Comment extends React.Component {
         super();
         this.toggleReply = this.toggleReply.bind(this);
         this.addNewReply = this.addNewReply.bind(this);
-        this.state = {
-            isReplyVisible: false
-        }
     }
-
-    componentWillReceiveProps(){
-        if( this.props.thread.activeTextarea !== this.props.id || this.props.thread.activeTextarea === null){
-            this.setState({
-                isReplyVisible: false
-            });
-        }
-    }
-
 
     toggleReply(){
-        this.props.setActiveTextarea(this.props.id);   
+        this.props.setActiveTextarea(this.props.id);
     }
 
-    addNewReply(value){  
-        const {id, isReply, threadId} = this.props;
-        const reply = {replyTo: id,content:value, threadId};
+    addNewReply(content){
+        const {id, threadId} = this.props;
+        const reply = {replyTo: id, content, threadId};
 
         this.props.addReply(reply);
     }
 
     render(){
-        var {content, isReply, userId, nrReplies, replies} = this.props;
+        var {content, isReply, userId/*, nrReplies, replies*/} = this.props;
 
-        var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id && 
-            this.props.thread.activeTextarea.active) ? true : false;
+        var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id &&
+            this.props.thread.activeTextarea.active);
 
         const tempc = ` | id: ${this.props.id} --- currentId:  ${this.props.thread.activeTextarea.currentId} 
         --- active: ${this.props.thread.activeTextarea.active} ,
@@ -51,13 +39,13 @@ class Comment extends React.Component {
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur	`;
         content = content + ' - ' + tempc;// + tempc.substr(0, Math.floor(Math.random()*300+60) )
 
-  
+
 
 
         return(
             <styles.CommentsWrapper  isReply = {isReply}>
                 <styles.Group>
-                    <styles.Container>			
+                    <styles.Container>
                         <styles.ContentLeft>
                             <styles.Logo></styles.Logo>
                         </styles.ContentLeft>
@@ -73,10 +61,10 @@ class Comment extends React.Component {
 
                             </styles.Footer>
                             <div>
-                                <CommentTextArea 
-                                    isVisible = {isVisible} 
-                                    isReply={true} 
-                                    addNewComment = {this.addNewReply}
+                                <CommentTextArea
+                                    isVisible = {isVisible}
+                                    isReply={true}
+                                    addCommentOrReply = {this.addNewReply}
                                 />
                             </div>
                         </styles.ContentRight>
@@ -84,13 +72,13 @@ class Comment extends React.Component {
                 </styles.Group>
             </styles.CommentsWrapper>
         );
-  
+
 
     }
 
 }
 
-const mapStateToProps = (state)=>( {
+const mapStateToProps = state =>( {
     thread: state.ThreadReducer
 });
 
@@ -100,7 +88,7 @@ const mapDispatchToProps = dispatch=>({
     ,
     setActiveTextarea: id =>
         dispatch(setActiveTextarea(id))
-    
+
 });
 
 

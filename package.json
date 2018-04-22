@@ -6,7 +6,7 @@
   "scripts": {
     "start-be": "nodemon index",
     "start-fe": "npm --prefix ./FE run webpack",
-    "all": "npm-run-all --parallel start-be start-fe",
+    "all": "set \"NODE_ENV=development\" & npm-run-all --parallel start-be start-fe",
     "all-noDB": "set \"NO_DB=true\" & set \"NODE_ENV=development\" & npm-run-all --parallel start-fe start-be"
   },
   "author": "",

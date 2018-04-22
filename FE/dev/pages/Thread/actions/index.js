@@ -17,13 +17,28 @@ export const loadComments = () => dispatch =>{
 
 };
 
-export const addComment = comment =>({
-    type: actionTypes.addComment,
-    payload: comment
-});
-export const _addComment = reply => dispatch =>{
+
+//addComment & addReply - similar
+//wip
+export const addComment = comment => dispatch =>{
+    console.log('comment : ',comment)
     dispatch( {type: actionTypes.addComment + '_PENDING'} );
-    //...
+    axios.post('/api/Thread/addComment',{
+        content: comment.content,
+        threadId: comment.threadId
+    }).then( result =>{ 
+        //let {id, content, replyTo, threadId, userId, groupId} = result.data ;
+
+        dispatch({ 
+            type: actionTypes.addComment+'_FULFILLED',
+            payload: result.data
+        }); 
+
+    }).catch(error =>
+        dispatch({ type: actionTypes.addComment+'_REJECTED'}) 
+    );    
+
+
 }
 
 
