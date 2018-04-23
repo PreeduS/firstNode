@@ -38,16 +38,18 @@ class CommentTextArea extends React.Component {
     }
 
     render() {
-        const isPending = this.props.comments.pending;
+        const {id, isReply, isVisible} = this.props;
+        const isPending = this.props.comments.status.findIndex(el => el.id === id && el.status === 'pending' ) !== -1;
         const isSubmitDisabled = !this.state.textarea.trim().length || isPending;
-        const label = this.props.isReply? 'Add Reply' : 'Add Comment';
-        if(!this.props.isVisible){
+        const label = isReply? 'Add Reply' : 'Add Comment';
+        if(!isVisible){
             return <div></div>;
         }
 
         return(
             <styles.CommentTextAreaWrapper>
                 <textarea
+                    disabled = {isPending}
                     onChange = {e=> {this.resizeTextarea(e); this.updateTextAreaValue(e);} }
                     value = {this.state.textarea}>
                 </textarea>
@@ -61,7 +63,8 @@ CommentTextArea.propTypes = {
     comments: PropTypes.object.isRequired,
     isReply: PropTypes.bool,
     isVisible: PropTypes.bool.isRequired,
-    addCommentOrReply: PropTypes.func.isRequired
+    addCommentOrReply: PropTypes.func.isRequired,
+    id: PropTypes.number.isRequired
 }
 
 

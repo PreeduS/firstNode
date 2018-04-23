@@ -33,7 +33,12 @@ class Comments extends React.Component {
             <styles.CommentsWrapper>
                 On Comments...
                 <br /><br />
-                <CommentTextArea addCommentOrReply = {this.addNewComment} isVisible = {true}/><br />
+                <CommentTextArea
+                    id = {-1}
+                    addCommentOrReply = {this.addNewComment}
+                    isVisible = {true}
+                />
+                <br />
 
                 {commentsData.length > 0 && commentsData.map( c =>
                     <CommentGroup

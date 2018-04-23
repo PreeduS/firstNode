@@ -4,7 +4,7 @@ import actionTypes from '../actionTypes';
 const initialState = {
     comments:[],
     thread:{
-        activeTextarea: {currentId: null, active: false}
+        activeTextarea: {currentId: null, active: false} //maybe on comments reducer
     }
 
 }

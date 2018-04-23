@@ -12,6 +12,9 @@ const repo = rootRequire('BE/repos/Thread');
 
 connection.sync({force: false}).then(() => {});
 
+const getGeneralError = err => ( {error:{message: err.errors} } );//move later
+
+
 router.get("/getComments",(req,res)=>{
     Comment.findAll().then(c => {
         res.json(c);
@@ -28,9 +31,9 @@ router.post("/addComment",(req,res)=>{
         userId: 1
     }).then((result, err)=>{
         res.json(result.get({plain:true})); 
-    }).catch(err =>{
-        return res.status(400).send(err.errors);//&.message //check later
-    });
+    }).catch(err =>
+        res.status(400).send(err.errors) //&.message //check later
+    );
    
 });
 
@@ -40,7 +43,9 @@ router.get("/getAll",(req,res)=>{
     connection.query("select * from getComments(?)",{replacements: [threadId] }).then(result => {
         let response = repo.getAll(result[0]);
         res.send(response);
-      });
+      }).catch(err =>
+        res.status(400).send(err.errors)
+    );
 });
 
 router.post('/addReply',  async(req, res) =>{
@@ -51,10 +56,13 @@ router.post('/addReply',  async(req, res) =>{
  
 
     let result = await Comment.findOne({where: {id: replyTo,threadId: threadId}})
-    .catch(err =>{
-        return res.status(400).send(err.errors);
-    });
+    .catch(err =>
+        getGeneralError(err)
+    );
+    if(result.error){ return res.status(400).send(result.error.message); }
+        
     
+        
     let groupId = result.groupId === null ? result.id : result.groupId;
  
     result = await Comment.create({
@@ -65,11 +73,11 @@ router.post('/addReply',  async(req, res) =>{
         nrReplies: 0,
         userId: userId
     })
-    .catch(err =>{
-        return res.status(400).send(err.errors);
-       
-    });
+    .catch(err =>
+        getGeneralError(err)
+    );
 
+    if(result.error){ return res.status(400).send(result.error.message); }
     res.send(result);
 
 });

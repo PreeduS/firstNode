@@ -1,7 +1,7 @@
 import actionTypes from '../actionTypes';
 import initialState from './initialState'
 
-const addReply = (_data, reply)=>{
+const addReply = (_data, reply) => {            //rem, edit here, state is mutated
     let comment; //where the reply is added
     let data = [..._data];
     //first search by group
@@ -36,26 +36,60 @@ const addReply = (_data, reply)=>{
 
 }
 
+
+const getUpdatedStatus = (statusData, id, newStatus) => {
+    let data = [...statusData];
+    //let elem = data.find(d => d.id === id);
+    let elemIndex = data.findIndex(d => d.id === id);
+    if(elemIndex === -1){
+            data = [
+                ...data,
+                {id, status: newStatus}
+            ];
+    }else{
+        let prevElem = data[elemIndex];
+        let newElem = {
+            ...prevElem,
+            status: newStatus
+        };
+        data[elemIndex] = newElem;
+    }
+    return data;
+}
+
+
 const CommentsReducer =( state = initialState.comments, action) =>{
 
     switch(action.type) {
         //addComment
-        case actionTypes.addComment + '_PENDING':
+        case actionTypes.addComment + '_PENDING':{
+            let newStatus = getUpdatedStatus(state.status, -1, 'pending'); //default
             return{
                 ...state,
-                pending: true
+                pending: true,
+                status: newStatus
             };
-
-        case actionTypes.addComment + '_FULFILLED':
+        }
+        case actionTypes.addComment + '_FULFILLED':{
+            let newStatus = getUpdatedStatus(state.status, -1, 'recent');
             return{
                 ...state,
                 pending: false,
                 data:[
                     action.payload,
                     ...state.data
-                ]
+                ],
+                status: newStatus
             };
-
+        }
+        case actionTypes.addComment + '_REJECTED':{
+            let newStatus = getUpdatedStatus(state.status, -1, 'error');
+            return{
+                ...state,
+                pending: false,
+                status: newStatus
+            };
+        }
         //loadComments
         case actionTypes.loadComments + '_PENDING':
             return{
@@ -73,21 +107,39 @@ const CommentsReducer =( state = initialState.comments, action) =>{
             };
 
         //addReply
-        case actionTypes.addReply + '_PENDING':
+        case actionTypes.addReply + '_PENDING':{
+            let {replyTo} = action.payload;
+            let newStatus = getUpdatedStatus(state.status, replyTo, 'pending');
             return{
                 ...state,
-                pending: true
-            };
+                pending: true,
+                status: newStatus
 
-        case actionTypes.addReply + '_FULFILLED':
+            };
+        }
+        case actionTypes.addReply + '_FULFILLED':{
+            let {replyTo} = action.payload;
+            let newStatus = getUpdatedStatus(state.status, replyTo, 'recent');   //rem, recent for the new id, not replyTo, new line
             let newData = addReply(state.data, action.payload);
             return {
                 ...state,
                 pending: false,
-                data: [...newData]
+                data: [...newData],
+                status: newStatus
+
 
             };
+        }
+        case actionTypes.addReply + '_REJECTED':{
+            let {replyTo} = action.payload;
+            let newStatus = getUpdatedStatus(state.status, replyTo, 'error');
+            return {
+                ...state,
+                pending: false,
+                status: newStatus
 
+            };
+        }
     }
     return state;
 

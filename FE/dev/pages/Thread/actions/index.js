@@ -32,35 +32,40 @@ export const addComment = comment => dispatch =>{
         dispatch({ 
             type: actionTypes.addComment+'_FULFILLED',
             payload: result.data
-        }); 
+        });
 
     }).catch(error =>
         dispatch({ type: actionTypes.addComment+'_REJECTED'}) 
-    );    
+    );
 
 
 }
 
 
 export const addReply = reply => dispatch =>{
-    dispatch( {type: actionTypes.addReply + '_PENDING'} );
+    dispatch({
+        type: actionTypes.addReply + '_PENDING',
+        payload: {replyTo: reply.replyTo}
+    });
 
     axios.post('/api/Thread/addReply',{
         content: reply.content,
         replyTo: reply.replyTo,
         threadId: reply.threadId
     }).then( result =>{ 
-         
+
         dispatch({ 
             type: actionTypes.addReply+'_FULFILLED',
-            payload: result.data 
-        }); 
+            payload: result.data
+        });
 
     }).catch(error =>
-        dispatch({ type: actionTypes.addReply+'_REJECTED'}) 
+        dispatch({
+            type: actionTypes.addReply+'_REJECTED',
+            payload: {replyTo: reply.replyTo}
+        }) 
     );
-    
- 
+
 };
 
 

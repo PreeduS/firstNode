@@ -27,12 +27,12 @@ class Comment extends React.Component {
     }
 
     render(){
-        var {content, isReply, userId/*, nrReplies, replies*/} = this.props;
+        var {id, content, isReply, userId/*, nrReplies, replies*/} = this.props;
 
         var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id &&
             this.props.thread.activeTextarea.active);
 
-        const tempc = ` | id: ${this.props.id} --- currentId:  ${this.props.thread.activeTextarea.currentId} 
+        const tempc = ` | id: ${id} --- currentId:  ${this.props.thread.activeTextarea.currentId} 
         --- active: ${this.props.thread.activeTextarea.active} ,
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -62,6 +62,7 @@ class Comment extends React.Component {
                             </styles.Footer>
                             <div>
                                 <CommentTextArea
+                                    id = {id}
                                     isVisible = {isVisible}
                                     isReply={true}
                                     addCommentOrReply = {this.addNewReply}
