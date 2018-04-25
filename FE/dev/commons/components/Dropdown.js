@@ -1,11 +1,10 @@
 import React from 'react';
-import styles from '../styles/Dropdown.scss';
-
+import * as styles from '../styles/Dropdown';
 
 class Dropdown extends React.Component {
     constructor(){
         super();
-        this.dropdownRef = React.createRef(); 
+        this.dropdownRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -36,12 +35,12 @@ class Dropdown extends React.Component {
     render(){
         const {showDropdown} = this.props;
 
-
         return(
             <div ref = {this.dropdownRef}>
-                {showDropdown && <div className = {styles.dropDown} >
+                {showDropdown &&
+                <styles.Dropdown>
                     {this.props.children}
-                </div>}
+                </styles.Dropdown>}
             </div>
         );
     }

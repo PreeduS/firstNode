@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-//import * as variables from '~/commons/styles/variables';
+import * as variables from '~/commons/styles/variables';
 
 export const Wrapper = styled.div`
   position:relative;
@@ -9,7 +9,7 @@ export const DimmerContainer = styled.div`
     position:absolute;
     width:100%;
     height:100%;
-    z-index:2;
+    z-index:${variables.loaderHocZIndex};
 `;
 export const LoaderContainer = styled.div`
     position:relative;

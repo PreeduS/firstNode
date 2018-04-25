@@ -14,6 +14,17 @@ export const mainContainerBorderColor = borderColorDarker2;
 export const mainContainerBorderColorLighter = borderColor;
 
 
+/*appTopMenu*/
 
+//$appTopMenu-border-color: rgb(220,220,220);
+export const appTopMenuBorderColor = 'rgb(220,220,220)';
+//$appTopMenu-background-color: #FAFAFA;
+export const appTopMenuBackgroundColor = '#FAFAFA';
+export const appTopMenuHeight = '40px';
+
+/*appSideMenu*/
+export const appSideMenuWidth = '260px';
 
 //z-index
+export const dropdownZIndex = 1;
+export const loaderHocZIndex = 2;

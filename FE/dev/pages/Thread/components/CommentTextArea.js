@@ -12,11 +12,10 @@ class CommentTextArea extends React.Component {
         super();
         this.resizeTextarea = this.resizeTextarea.bind(this);
         this.addCommentOrReply = this.addCommentOrReply.bind(this);
-        this.prevHeight = null;
+        this.getTextareaValue = this.getTextareaValue.bind(this);
+        //this.prevHeight = null;
 
-        this.state = {
-            //textarea:''
-        }
+
     }
 
     resizeTextarea(el){
@@ -25,16 +24,18 @@ class CommentTextArea extends React.Component {
         elem.style.height = elem.scrollHeight;
     }
     updateTextAreaValue(el){
-        //let value = el.target.value;
-        this.setState({
-            //textarea:value
-        });
         this.props.onChange(el);
     }
 
     addCommentOrReply(){
-        let content = this.state.textarea;
-        this.props.addCommentOrReply(content); //maybe onAdd onSubmit
+        const textareaValue = this.getTextareaValue();
+        this.props.addCommentOrReply(textareaValue); //maybe onAdd onSubmit
+    }
+    getTextareaValue(){
+        const {id} = this.props;
+        const currentStatus = this.props.comments.status[id];
+        const textareaValue = currentStatus === undefined ? '' : currentStatus.value;
+        return textareaValue;
     }
 
     render() {
@@ -42,7 +43,7 @@ class CommentTextArea extends React.Component {
         const currentStatus = this.props.comments.status[id];
         const isPending = currentStatus === undefined ? false : currentStatus.status === 'pending';
         const isError = currentStatus === undefined ? false : currentStatus.status === 'error';
-        const textareaValue = currentStatus === undefined ? '' : currentStatus.value;
+        const textareaValue =  this.getTextareaValue();
 
         const isSubmitDisabled = textareaValue.trim().length === 0 || isPending;
         const label = isReply? 'Add Reply' : 'Add Comment';

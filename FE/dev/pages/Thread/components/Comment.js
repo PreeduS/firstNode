@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import * as styles from '../styles/Comment.js';
+import Link from '~/commons/components/Link';
 
 import CommentTextArea from './CommentTextArea';
 import ThreadReducer from '../reducers/ThreadReducer';
@@ -32,17 +32,16 @@ class Comment extends React.Component {
     }
 
     render(){
-        var {id, content, isReply, userId/*, nrReplies, replies*/} = this.props;
+        var {id, content, isReply, userId } = this.props;
 
         var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id &&
             this.props.thread.activeTextarea.active);
 
-        const tempc = ` | id: ${id} --- currentId:  ${this.props.thread.activeTextarea.currentId} 
-        --- active: ${this.props.thread.activeTextarea.active} ,
+        const tempc = ` | id: ${id} ---
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur	`;
-        content = content + ' - ' + tempc;// + tempc.substr(0, Math.floor(Math.random()*300+60) )
+        content = content + ' - ' + tempc;
 
 
 
@@ -62,7 +61,9 @@ class Comment extends React.Component {
                                 {content}
                             </styles.Content>
                             <styles.Footer>
-                                <b onClick = {this.toggleReply}>Reply</b> <br />
+                                <div onClick = {this.toggleReply}>
+                                    <Link>Reply</Link>
+                                </div>
 
                             </styles.Footer>
                             <div>

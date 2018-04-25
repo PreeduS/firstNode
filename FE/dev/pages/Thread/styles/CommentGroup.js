@@ -11,6 +11,20 @@ export const LoadCommentsContainer = styled.div`
     margin-left: ${props => props.hasReplies ? '122px':'62px'};
 
     display:inline-block;
-    cursor:pointer;
+
 `;
 
+
+
+/*
+    cursor:pointer;
+    >span{
+        font-size:1.05rem;
+        font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+        font-weight:bold;
+        color:rgb(77, 77, 77);
+        &:hover{
+            color:rgb(7, 7, 7);
+        }
+    }
+*/

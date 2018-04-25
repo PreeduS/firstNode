@@ -1,6 +1,6 @@
 import React from 'react';
-
 import * as styles from '../styles/CommentGroup.js';
+import Link from '~/commons/components/Link';
 
 import Comment from './Comment';
 
@@ -15,7 +15,8 @@ class CommentGroup extends React.Component {
     loadMoreComments(nrReplies, replies){
         //if(!nrReplies){return ''; }
         let nrVisibleRplies = replies ? replies.length : 0;
-        return `---[t]${nrReplies} - [v]${nrVisibleRplies}`;
+        let content = 'Load more comments[t]' + nrReplies +' - [v]' + nrVisibleRplies;
+        return <Link>{content}</Link>;
     }
 
     render() {
@@ -31,7 +32,7 @@ class CommentGroup extends React.Component {
                     </div>
                 )}
                 <styles.LoadCommentsContainer hasReplies = {replies!==undefined}>
-                    Load more comments {loadMoreComments}
+                    {loadMoreComments}
                 </styles.LoadCommentsContainer>
             </styles.CommentGroupWrapper>
 

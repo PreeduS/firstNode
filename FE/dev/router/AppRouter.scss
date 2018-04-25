@@ -4,10 +4,11 @@ $sideMenuWidth: 260px;
 $topMenuHeight: 40px;
 
 
-
+/*
 
 .app-top-menu{
     border-bottom:1px solid $appTopMenu-border-color;
+    border-bottom:1px solid blue;
     height:$topMenuHeight;
     background:$appTopMenu-background-color;
     display:flex;
@@ -18,6 +19,7 @@ $topMenuHeight: 40px;
         flex:1;
     }    
 }
+*/
 .app-wrapper{
 
     //display: flex;

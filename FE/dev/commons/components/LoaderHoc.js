@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as styles from '../styles/LoaderHoc.js';
 import { Loader } from 'semantic-ui-react'
 
 const LoaderHoc = Component =>{
-    return class LoaderHocContainer extends React.Component{
-
+    class LoaderHocContainer extends React.Component{
         render(){
             const {loading, ...rest} = this.props;
 
@@ -26,6 +26,11 @@ const LoaderHoc = Component =>{
             return <Component {...rest} />
         }
     }
+    LoaderHocContainer.propTypes = {
+        loading: PropTypes.bool.isRequired
+    }
+    return LoaderHocContainer;
+
 }
 
 export default LoaderHoc;
