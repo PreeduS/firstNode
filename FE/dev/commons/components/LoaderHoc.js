@@ -1,25 +1,47 @@
 import React from 'react';
+import * as styles from '../styles/LoaderHoc.js';
+import { Loader } from 'semantic-ui-react'
 
 const LoaderHoc = Component =>{
-    return class Loader extends React.Component{
+    return class LoaderHocContainer extends React.Component{
+
         render(){
-            const loading = this.props.loading || false;
+            const {loading, ...rest} = this.props;
 
             if(loading){
                 return(
-                    <div style={{position:'relative'}}>
-                        <div style={{position:'absolute',width:'100%',height:'100%',zIndex:2 }}>
-                        Loading... </div>
-                        <div style = {{opacity:.3}} >
-                            <Component {...this.props}/>
-                        </div>
-                    </div>
+                    <styles.Wrapper>
+                        <styles.DimmerContainer>
+                            <styles.LoaderContainer>
+                                <div><Loader active inline size = "tiny"/> <span>Loading...</span></div>
+                            </styles.LoaderContainer>
+                        </styles.DimmerContainer>
+                        <styles.Dimmer>
+                            <Component {...rest}/>
+                        </styles.Dimmer>
+                    </styles.Wrapper>
 
                 );
             }
-            return <Component {...this.props} />
+            return <Component {...rest} />
         }
     }
 }
 
 export default LoaderHoc;
+
+
+
+/*
+componentDidMount(){
+    console.log('componentDidMount--')//chech if loading true
+    this.interval = setInterval( ()=> {
+        console.log('interval ',this.state.dotsCount)
+        this.setState({
+            dotsCount: this.state.dotsCount < 3 ? this.state.dotsCount + 1 : 0
+        });
+    },500);
+}
+componentWillUnmount(){ console.log('componentWillUnmount--')
+    clearInterval(this.interval);
+}*/

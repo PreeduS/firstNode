@@ -5,7 +5,7 @@ import * as styles from '../styles/Comment.js';
 
 import CommentTextArea from './CommentTextArea';
 import ThreadReducer from '../reducers/ThreadReducer';
-import {addReply, setActiveTextarea} from '../actions';
+import {addReply, setActiveTextarea, updateTextarea} from '../actions';
 
 
 class Comment extends React.Component {
@@ -13,6 +13,7 @@ class Comment extends React.Component {
         super();
         this.toggleReply = this.toggleReply.bind(this);
         this.addNewReply = this.addNewReply.bind(this);
+        this.changeHandler = this.changeHandler.bind(this);
     }
 
     toggleReply(){
@@ -24,6 +25,10 @@ class Comment extends React.Component {
         const reply = {replyTo: id, content, threadId};
 
         this.props.addReply(reply);
+    }
+    changeHandler(el){
+        const {id} = this.props;
+        this.props.updateTextarea(id, el.target.value)
     }
 
     render(){
@@ -66,6 +71,7 @@ class Comment extends React.Component {
                                     isVisible = {isVisible}
                                     isReply={true}
                                     addCommentOrReply = {this.addNewReply}
+                                    onChange = {this.changeHandler}
                                 />
                             </div>
                         </styles.ContentRight>
@@ -86,6 +92,9 @@ const mapStateToProps = state =>( {
 const mapDispatchToProps = dispatch=>({
     addReply: reply =>
         dispatch(() => addReply(reply)(dispatch) )
+    ,
+    updateTextarea: (id, value) =>
+        dispatch(() => updateTextarea(id, value)(dispatch) )
     ,
     setActiveTextarea: id =>
         dispatch(setActiveTextarea(id))

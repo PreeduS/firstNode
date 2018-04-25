@@ -49,6 +49,7 @@ export const Username = styled.div`
 export const Content = styled.div`
     padding:0px 5px;
     padding-top:6px;
+    line-height:1.3;
 `;
 
 export const Footer = styled.div`

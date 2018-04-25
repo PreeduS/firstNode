@@ -68,6 +68,14 @@ export const addReply = reply => dispatch =>{
 
 };
 
+export const updateTextarea = (id, value) => dispatch =>{
+    dispatch({
+        type: actionTypes.updateTextarea,
+        payload: {id, value}
+    });
+};
+
+
 
 export const setActiveTextarea = id => ({
     type: actionTypes.setActiveTextarea,

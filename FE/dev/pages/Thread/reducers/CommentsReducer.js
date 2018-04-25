@@ -37,24 +37,20 @@ const addReply = (_data, reply) => {            //rem, edit here, state is mutat
 }
 
 
-const getUpdatedStatus = (statusData, id, newStatus) => {
-    let data = [...statusData];
-    //let elem = data.find(d => d.id === id);
-    let elemIndex = data.findIndex(d => d.id === id);
-    if(elemIndex === -1){
-            data = [
-                ...data,
-                {id, status: newStatus}
-            ];
-    }else{
-        let prevElem = data[elemIndex];
-        let newElem = {
-            ...prevElem,
-            status: newStatus
-        };
-        data[elemIndex] = newElem;
+const getUpdatedStatus = ({statusData, id, newStatus, textareaValue}) => {
+    let data = {...statusData};
+    data[id] = {
+        ...data[id],
+        id,
+        status: newStatus
     }
+
+    if(textareaValue !== null){
+        data[id].value = textareaValue;
+    }
+
     return data;
+
 }
 
 
@@ -63,7 +59,9 @@ const CommentsReducer =( state = initialState.comments, action) =>{
     switch(action.type) {
         //addComment
         case actionTypes.addComment + '_PENDING':{
-            let newStatus = getUpdatedStatus(state.status, -1, 'pending'); //default
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: -1, newStatus: 'pending', textareaValue: null
+            });
             return{
                 ...state,
                 pending: true,
@@ -71,7 +69,9 @@ const CommentsReducer =( state = initialState.comments, action) =>{
             };
         }
         case actionTypes.addComment + '_FULFILLED':{
-            let newStatus = getUpdatedStatus(state.status, -1, 'recent');
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: -1, newStatus: 'recent', textareaValue: ''
+            });
             return{
                 ...state,
                 pending: false,
@@ -83,7 +83,9 @@ const CommentsReducer =( state = initialState.comments, action) =>{
             };
         }
         case actionTypes.addComment + '_REJECTED':{
-            let newStatus = getUpdatedStatus(state.status, -1, 'error');
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: -1, newStatus: 'error', textareaValue: null
+            });
             return{
                 ...state,
                 pending: false,
@@ -109,7 +111,9 @@ const CommentsReducer =( state = initialState.comments, action) =>{
         //addReply
         case actionTypes.addReply + '_PENDING':{
             let {replyTo} = action.payload;
-            let newStatus = getUpdatedStatus(state.status, replyTo, 'pending');
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: replyTo, newStatus: 'pending', textareaValue: null
+            });
             return{
                 ...state,
                 pending: true,
@@ -119,7 +123,10 @@ const CommentsReducer =( state = initialState.comments, action) =>{
         }
         case actionTypes.addReply + '_FULFILLED':{
             let {replyTo} = action.payload;
-            let newStatus = getUpdatedStatus(state.status, replyTo, 'recent');   //rem, recent for the new id, not replyTo, new line
+            //rem, recent for the new id, not replyTo, new line
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: replyTo, newStatus: 'recent', textareaValue: ''
+            });
             let newData = addReply(state.data, action.payload);
             return {
                 ...state,
@@ -132,7 +139,9 @@ const CommentsReducer =( state = initialState.comments, action) =>{
         }
         case actionTypes.addReply + '_REJECTED':{
             let {replyTo} = action.payload;
-            let newStatus = getUpdatedStatus(state.status, replyTo, 'error');
+            let newStatus = getUpdatedStatus({
+                statusData: state.status, id: replyTo, newStatus: 'error', textareaValue: null
+            });
             return {
                 ...state,
                 pending: false,
@@ -140,9 +149,24 @@ const CommentsReducer =( state = initialState.comments, action) =>{
 
             };
         }
+        case actionTypes.updateTextarea:{
+            let {id, value} = action.payload;
+
+            return {
+                ...state,
+                status: {
+                    ...state.status,
+                    [id]: {
+                        ...state.status[id],
+                        value
+                    }
+                }
+            };
+        }
+
+
     }
     return state;
-
 }
 
 export default CommentsReducer;

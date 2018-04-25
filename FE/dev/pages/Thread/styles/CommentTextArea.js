@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import * as variables from '~/commons/styles/variables';
 
 export const CommentTextAreaWrapper = styled.div`
+
     textarea{
         background-color: transparent;
         border: 1px solid ${variables.mainContainerBorderColor};
@@ -17,4 +18,10 @@ export const CommentTextAreaWrapper = styled.div`
 
 
     }
+`;
+
+export const Error = styled.div`
+    display:inline-block;
+    color:#d01919;
+    margin-left:5px;
 `;

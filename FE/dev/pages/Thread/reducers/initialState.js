@@ -2,7 +2,8 @@ const initialState = {
     comments:{
         data:[],
         pending: false,  //pending overall
-        status:[]
+        //status:[],
+        status:{}
     }
 }
 export default initialState;
