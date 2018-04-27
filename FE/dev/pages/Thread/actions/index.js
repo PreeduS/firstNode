@@ -1,60 +1,65 @@
 import actionTypes from '../actionTypes'
-import axios from 'axios';
+import services from '../services';
 
 
-export const loadComments = () => dispatch =>{
+const generalError = type => dispatch => error =>
+    dispatch({
+        type: type + '_REJECTED',
+        payload: error
+    });
+
+export const loadComments = threadId => dispatch =>{
     dispatch( {type: actionTypes.loadComments + '_PENDING'} );
 
-    axios.get('/api/thread/getall').then( result =>{           
+    services.loadComments(threadId).then( result =>{
         dispatch({
             type: actionTypes.loadComments + '_FULFILLED',
-            payload: result.data 
+            payload: result.data
         });
 
-    }).catch( error => 
-       dispatch( {type: actionTypes.loadComments + '_REJECTED'} )
-    );
+    }).catch( generalError(actionTypes.loadComments)(dispatch) )
+};
+
+export const loadMoreComments = (threadId, lastId) => dispatch => {
+    dispatch( {type: actionTypes.loadMoreComments + '_PENDING'} );
+
+    services.loadMoreComments(threadId, lastId).then( result =>{           
+        dispatch({
+            type: actionTypes.loadMoreComments + '_FULFILLED',
+            payload: result.data
+        });
+
+    }).catch( generalError(actionTypes.loadMoreComments)(dispatch) )
 
 };
 
-
 //addComment & addReply - similar
-//wip
+
 export const addComment = comment => dispatch =>{
     console.log('comment : ',comment)
     dispatch( {type: actionTypes.addComment + '_PENDING'} );
-    axios.post('/api/Thread/addComment',{
-        content: comment.content,
-        threadId: comment.threadId
-    }).then( result =>{ 
-        //let {id, content, replyTo, threadId, userId, groupId} = result.data ;
+    const {threadId, content} = comment;
 
-        dispatch({ 
+    services.addComment(threadId, content).then( result =>{ 
+        //let {id, content, replyTo, threadId, userId, groupId} = result.data ;
+        dispatch({
             type: actionTypes.addComment+'_FULFILLED',
             payload: result.data
         });
 
-    }).catch(error =>
-        dispatch({ type: actionTypes.addComment+'_REJECTED'}) 
-    );
-
-
+    }).catch( generalError(actionTypes.addComment)(dispatch) )
 }
 
 
 export const addReply = reply => dispatch =>{
+    const {threadId, content, replyTo} = reply;
     dispatch({
         type: actionTypes.addReply + '_PENDING',
-        payload: {replyTo: reply.replyTo}
+        payload: {replyTo}
     });
 
-    axios.post('/api/Thread/addReply',{
-        content: reply.content,
-        replyTo: reply.replyTo,
-        threadId: reply.threadId
-    }).then( result =>{ 
-
-        dispatch({ 
+    services.addReply(threadId, content, replyTo).then( result =>{ 
+        dispatch({
             type: actionTypes.addReply+'_FULFILLED',
             payload: result.data
         });
@@ -62,8 +67,8 @@ export const addReply = reply => dispatch =>{
     }).catch(error =>
         dispatch({
             type: actionTypes.addReply+'_REJECTED',
-            payload: {replyTo: reply.replyTo}
-        }) 
+            payload: {replyTo}
+        })
     );
 
 };

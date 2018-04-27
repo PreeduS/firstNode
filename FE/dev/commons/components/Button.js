@@ -18,7 +18,12 @@ class Button extends React.Component {
     }
 
     render(){
-        const { width, height, children, disabled, loading, inlineStyles, ...rest} = this.props;
+        const { width, height, children, disabled, loading, inlineStyles, type, ...rest} = this.props;
+        const StyledContainer = {
+            'default': styles.ButtonDefault,
+            'gray': styles.ButtonGray,
+        }[type];
+
         const content = loading ?
         (<styles.Content>
             <Loader active inline size = "tiny"/>
@@ -26,21 +31,27 @@ class Button extends React.Component {
         </styles.Content>) : <span>{children}</span>;
 
         return(
-            <styles.Button width = {width} height = {height} inlineStyles = {inlineStyles} className = {disabled? 'disabled':''}>
+            <StyledContainer width = {width} height = {height} inlineStyles = {inlineStyles} className = {disabled? 'disabled':''}>
                 <ButtonSemanticUI onClick = {this.clickHandler} disabled = {disabled} {...rest} >
                     {content}
                 </ButtonSemanticUI>
-            </styles.Button>
+            </StyledContainer>
         )
     }
 }
 
 Button.propTypes = {
     children: PropTypes.string.isRequired,
-    width: PropTypes.number,
+    //width: PropTypes.number,
+    width: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+        //PropTypes.oneOf(['auto'])
+    ]),
     height: PropTypes.number,
     disabled: PropTypes.bool,
     loading: PropTypes.bool,
+    type: PropTypes.oneOf(['default', 'gray']),
 };
 
 Button.defaultProps = {
@@ -52,7 +63,8 @@ Button.defaultProps = {
     size:'medium',
     compact:true,
     basic:true,
-    inlineStyles:''
+    inlineStyles:'',
+    type:'default'
 };
 
 export default Button;

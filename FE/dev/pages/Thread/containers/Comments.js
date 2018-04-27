@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 
 import CommentsReducer from '../reducers/CommentsReducer'
 import ThreadReducer from '../reducers/ThreadReducer'
-import {addComment, updateTextarea } from '../actions';
+import {addComment, updateTextarea, loadMoreComments } from '../actions';
 
 import CommentGroup from '../components/CommentGroup';
 import CommentTextArea from '../components/CommentTextArea';
+import LoadMoreComments from '../components/LoadMoreComments';
 
 import * as styles from '../styles/Comments.js';
 
@@ -16,6 +17,7 @@ class Comments extends React.Component {
 
         this.addNewComment = this.addNewComment.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
+        this.loadMoreComments = this.loadMoreComments.bind(this);
     }
 
     addNewComment(content){
@@ -23,6 +25,14 @@ class Comments extends React.Component {
         const comment = {content, threadId};
         this.props.addComment(comment);
     }
+    loadMoreComments(){
+        console.log('loadMoreComments')
+        const threadId = 1; //temp ----------------
+        const lastId = 1; //temp ----------------
+        this.props.loadMoreComments(threadId, lastId)
+    }
+
+
     changeHandler(el){
         const id = -1;
         this.props.updateTextarea(id, el.target.value)
@@ -30,6 +40,7 @@ class Comments extends React.Component {
 
     render() {
         const commentsData = this.props.comments.data;
+        //const loading = 
 
         return (
             <styles.CommentsWrapper>
@@ -49,6 +60,7 @@ class Comments extends React.Component {
                     />
                 )}
 
+                <LoadMoreComments loading = {true} onClick = {this.loadMoreComments}/>
             </styles.CommentsWrapper>
         );
 
@@ -67,6 +79,9 @@ const mapDispatchToProps = dispatch => ({
     ,
     addComment: comment =>
         dispatch(() => addComment(comment)(dispatch) )
+    ,
+    loadMoreComments: (threadId, lastId) =>
+        dispatch(() => loadMoreComments(threadId, lastId)(dispatch) )
 
 });
 

@@ -14,7 +14,8 @@ import * as styles from './styles/Thread';
 
 class Thread extends React.Component {
     componentDidMount(){
-        this.props.loadComments();
+        const threadId = 1;
+        this.props.loadComments(threadId);
     }
     render() {
         return (
@@ -31,8 +32,8 @@ const mapStateToProps = state =>( {
     comments: state.CommentsReducer
 });
 const mapDispatchToProps = dispatch => ({
-    loadComments:() =>
-        dispatch(()=> loadComments()(dispatch))
+    loadComments: threadId =>
+        dispatch(()=> loadComments(threadId)(dispatch))
 
 });
 
