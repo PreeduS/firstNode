@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
 import styles from '../styles/UserSection.scss';
 
 import Dropdown from '~/commons/components/Dropdown';
@@ -16,7 +15,8 @@ class UserSection extends React.Component {
     constructor(){
         super();
         this.state = {
-            showDropdown:false
+            showDropdown:false,
+            preventClose: false
         }
         this.dropdownButtonContainerRef = React.createRef(); 
 
@@ -24,8 +24,10 @@ class UserSection extends React.Component {
         this.dropdownBlur = this.dropdownBlur.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.isPendingHandler = this.isPendingHandler.bind(this);
     }
     toogleDropdown(){
+        if(this.state.preventClose){return;}
         this.setState({showDropdown: !this.state.showDropdown});
     }
     dropdownBlur(e){
@@ -42,9 +44,13 @@ class UserSection extends React.Component {
         const {logout} = this.props;
         logout();
     }
+    isPendingHandler(isPending){
+        this.setState({preventClose: isPending})
+
+    }
 
     render(){
-        const {showDropdown} = this.state;
+        const {showDropdown, preventClose} = this.state;
         const {username} = this.props.user;
         const loggedIn = username !== null;
 
@@ -53,15 +59,14 @@ class UserSection extends React.Component {
                 <div className = {styles.leftContent}></div>
                 <div className = {styles.rightContent} ref = {this.dropdownButtonContainerRef}>
                     <div onClick = {this.toogleDropdown}>{username || 'Login'}</div>
-                    <div onClick = {this.toogleDropdown}>&#9662;</div>   
+                    <div onClick = {this.toogleDropdown}>&#9662;</div>
 
-                  
                     {loggedIn && <div onClick = {this.logout}>logout</div>}
 
                 </div>
                 <div className = {styles.dropDownContainer}>
-                    <Dropdown showDropdown = {showDropdown} onDropdownBlur = {this.dropdownBlur}>
-                        {!loggedIn && <LoginForm login = {this.login}/>}
+                    <Dropdown showDropdown = {showDropdown} onDropdownBlur = {this.dropdownBlur} preventClose = {preventClose}>
+                        {!loggedIn && <LoginForm login = {this.login} isPending = {this.isPendingHandler}/>}
                     </Dropdown>
                 </div>
             </div>

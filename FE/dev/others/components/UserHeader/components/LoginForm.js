@@ -23,15 +23,17 @@ class LoginForm extends React.Component{
         this.setState({pending:true});
         const {username, password} = this.state;
         const {login} = this.props;
-
+        this.props.isPending(true);
         services.login(username, password).then( result =>{
             console.log(result.data);
+            this.props.isPending(false);
             this.setState({
                 pending:false,
                 status: result.data
             });
             login(username);
         }).catch(error => {
+            this.props.isPending(false);
             this.setState({
                 pending: false,
                 status: error.response.data.error,

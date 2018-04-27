@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as styles from '../styles/Dropdown';
+
 
 class Dropdown extends React.Component {
     constructor(){
@@ -12,6 +14,7 @@ class Dropdown extends React.Component {
         var dropDownParentNode = this.dropdownRef.current.parentNode
         var target = e.target;
         var clickedInside = false;
+        var preventClose = this.props.preventClose;
 
         while(target.parentNode !== null){
             target = target.parentNode;
@@ -19,7 +22,7 @@ class Dropdown extends React.Component {
                 clickedInside = true; break;
             }
         }
-        if(!clickedInside){
+        if(!clickedInside && !preventClose){
             this.props.onDropdownBlur(e);
         }
 
@@ -33,8 +36,8 @@ class Dropdown extends React.Component {
     }
 
     render(){
-        const {showDropdown} = this.props;
-
+        let {showDropdown, preventClose} = this.props;
+        if(preventClose){ showDropdown = true; }
         return(
             <div ref = {this.dropdownRef}>
                 {showDropdown &&
@@ -45,5 +48,15 @@ class Dropdown extends React.Component {
         );
     }
 }
+
+Dropdown.propTypes = {
+    showDropdown: PropTypes.bool.isRequired,
+    onDropdownBlur: PropTypes.func,
+    preventClose: PropTypes.bool
+
+}
+Dropdown.defaultProps = {
+    preventClose: false
+};
 
 export default Dropdown;

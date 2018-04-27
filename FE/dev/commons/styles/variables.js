@@ -16,9 +16,7 @@ export const mainContainerBorderColorLighter = borderColor;
 
 /*appTopMenu*/
 
-//$appTopMenu-border-color: rgb(220,220,220);
 export const appTopMenuBorderColor = 'rgb(220,220,220)';
-//$appTopMenu-background-color: #FAFAFA;
 export const appTopMenuBackgroundColor = '#FAFAFA';
 export const appTopMenuHeight = '40px';
 

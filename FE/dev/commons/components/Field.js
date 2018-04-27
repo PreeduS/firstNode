@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../styles/Field.scss';
+import * as styles from '../styles/Field';
 
 class Field extends React.Component {
     constructor(){
@@ -21,19 +21,19 @@ class Field extends React.Component {
         let { label, value, errors, type} = this.props;
 
         return(
-            <div className = {styles.fieldContainer}>
-                <div className = {styles.leftContent}><span>{label}:</span></div>
-                <div className = {styles.rightContent}>
-                    <div className = {styles.inputContent}>
+            <styles.FieldContainer>
+                <styles.LeftContent><span>{label}:</span></styles.LeftContent>
+                <styles.RightContent>
+                    <styles.InputContent>
                         <input type={type} value={value} onChange = {this.changeHandler} onBlur = {this.blurHandler}/>
-                    </div>
+                    </styles.InputContent>
                     {errors &&
-                    <div className = {styles.validationContent}>
+                    <styles.ValidationContent>
                         <span>{value.length>0 && errors}</span>
-                    </div>}
-                </div>
+                    </styles.ValidationContent>}
+                </styles.RightContent>
 
-            </div>
+            </styles.FieldContainer>
         )
     }
 }
