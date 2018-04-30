@@ -1,4 +1,4 @@
-import actionTypes from '../actionTypes';
+/*import actionTypes from '../actionTypes';
 
 
 const initialState = {
@@ -42,4 +42,4 @@ const ThreadReducer =( state = initialState.thread, action) =>{
 
 }
 
-export default ThreadReducer;
+export default ThreadReducer;*/

@@ -33,14 +33,14 @@ class CommentTextArea extends React.Component {
     }
     getTextareaValue(){
         const {id} = this.props;
-        const currentStatus = this.props.comments.status[id];
-        const textareaValue = currentStatus === undefined ? '' : currentStatus.value;
+        const currentStatus = this.props.comments.status.comments[id];
+        const textareaValue = (currentStatus === undefined || currentStatus.value === undefined) ? '' : currentStatus.value;
         return textareaValue;
     }
 
     render() {
         const {id, isReply, isVisible} = this.props;
-        const currentStatus = this.props.comments.status[id];
+        const currentStatus = this.props.comments.status.comments[id];
         const isPending = currentStatus === undefined ? false : currentStatus.status === 'pending';
         const isError = currentStatus === undefined ? false : currentStatus.status === 'error';
         const textareaValue =  this.getTextareaValue();

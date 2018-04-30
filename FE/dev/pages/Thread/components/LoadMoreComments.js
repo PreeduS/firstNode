@@ -18,7 +18,7 @@ class LoadMoreComments extends React.Component {
 
                     <Button
                         onClick = {onClick}
-                        disabled = {false}
+                        disabled = {loading}
                         loading = {loading}
                         width = {'100%'}
                         height = {30}

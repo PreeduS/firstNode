@@ -8,6 +8,26 @@ const generalError = type => dispatch => error =>
         payload: error
     });
 
+
+export const updateTextarea = (id, value) => dispatch =>{
+    dispatch({
+        type: actionTypes.updateTextarea,
+        payload: {id, value}
+    });
+};
+
+
+//export const setActiveTextarea = id => ({
+export const toggleActiveTextarea = id => ({
+    type: actionTypes.toggleActiveTextarea,
+    payload: {id}
+});
+
+export const setActiveTextarea = (id, isActive )=> ({
+    type: actionTypes.setActiveTextarea,
+    payload: {id, isActive}
+});
+
 export const loadComments = threadId => dispatch =>{
     dispatch( {type: actionTypes.loadComments + '_PENDING'} );
 
@@ -23,7 +43,7 @@ export const loadComments = threadId => dispatch =>{
 export const loadMoreComments = (threadId, lastId) => dispatch => {
     dispatch( {type: actionTypes.loadMoreComments + '_PENDING'} );
 
-    services.loadMoreComments(threadId, lastId).then( result =>{           
+    services.loadMoreComments(threadId, lastId).then( result =>{
         dispatch({
             type: actionTypes.loadMoreComments + '_FULFILLED',
             payload: result.data
@@ -33,7 +53,10 @@ export const loadMoreComments = (threadId, lastId) => dispatch => {
 
 };
 export const loadMoreReplies = (threadId, commentGroupId, lastReplyId) => dispatch => {
-    dispatch( {type: actionTypes.loadMoreReplies + '_PENDING'} );
+    dispatch({
+        type: actionTypes.loadMoreReplies + '_PENDING',
+        payload: {commentGroupId}
+    });
   
     console.log('threadId : ',threadId)
     console.log('commentGroupId : ',commentGroupId)
@@ -49,7 +72,12 @@ export const loadMoreReplies = (threadId, commentGroupId, lastReplyId) => dispat
             }
         });
 
-    }).catch( generalError(actionTypes.loadMoreReplies)(dispatch) )
+    }).catch(error =>
+        dispatch({
+            type: actionTypes.loadMoreReplies+'_REJECTED',
+            payload: {commentGroupId}
+        })
+    );
 
 };
 
@@ -83,26 +111,21 @@ export const addReply = reply => dispatch =>{
             type: actionTypes.addReply+'_FULFILLED',
             payload: result.data
         });
-
-    }).catch(error =>
+        dispatch(
+            setActiveTextarea(replyTo, false)
+        );
+    }).catch(error =>{
         dispatch({
             type: actionTypes.addReply+'_REJECTED',
             payload: {replyTo}
-        })
+        });
+        dispatch(
+            setActiveTextarea(replyTo, true)
+        );
+
+        
+        }
     );
 
 };
 
-export const updateTextarea = (id, value) => dispatch =>{
-    dispatch({
-        type: actionTypes.updateTextarea,
-        payload: {id, value}
-    });
-};
-
-
-
-export const setActiveTextarea = id => ({
-    type: actionTypes.setActiveTextarea,
-    payload: id
-})

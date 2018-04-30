@@ -42,7 +42,7 @@ class Comments extends React.Component {
 
     render() {
         const commentsData = this.props.comments.data;
-        //const loading = 
+        const isPending = this.props.comments.status.loadMoreComments.status === 'pending'
 
         return (
             <styles.CommentsWrapper>
@@ -62,7 +62,7 @@ class Comments extends React.Component {
                     />
                 )}
 
-                <LoadMoreComments loading = {true} onClick = {this.loadMoreComments}/>
+                <LoadMoreComments loading = {isPending} onClick = {this.loadMoreComments}/>
             </styles.CommentsWrapper>
         );
 

@@ -39,149 +39,251 @@ const loadMoreReplies = (stateData, newReplies , commentGroupId) =>{
 
 }
 
-
-const getUpdatedStatus = ({statusData, id, newStatus, textareaValue}) => {
-    let data = {...statusData};
-    data[id] = {
-        ...data[id],
-        id,
-        status: newStatus
-    }
-
+//status state for comments/replies
+const getUpdatedStatusComment = ({stateComments, commentId, newStatus, textareaValue}) => {
+    let state = {
+        ...stateComments,
+        [commentId]:{
+            ...stateComments[commentId],
+            status: newStatus
+        }
+    };
     if(textareaValue !== null){
-        data[id].value = textareaValue;
+        state[commentId].value = textareaValue;
     }
 
-    return data;
+    return state;
 
 }
 
 
+const getUpdatedStatusCommentGroup = ({stateCommentGroup, commentGroupId, newStatus}) => {
+    let state = {
+        ...stateCommentGroup,
+        [commentGroupId]:{
+            ...stateCommentGroup[commentGroupId],
+            commentGroupStatus: newStatus
+        }
+    }
+
+    return state;
+}
+
+//set what comment/reply textarea is visible
+const toggleActiveTextarea = id => state =>{
+    //toggle if set, else set as true
+    let isActive = state[id] !== undefined ? !state[id].active : true;
+
+    let newState = {
+        ...state,
+        [id]:{
+            ...state[id],
+            active: isActive
+        }
+
+    };
+
+
+    return newState;
+}
+
+//reducer
 const CommentsReducer =( state = initialState.comments, action) =>{
 
     switch(action.type) {
         //addComment
         case actionTypes.addComment + '_PENDING':{
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: -1, newStatus: 'pending', textareaValue: null
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: -1, newStatus: 'pending', textareaValue: null
             });
             return{
                 ...state,
-                pending: true,
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
             };
         }
         case actionTypes.addComment + '_FULFILLED':{
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: -1, newStatus: 'recent', textareaValue: ''
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: -1, newStatus: 'recent', textareaValue: ''
             });
             return{
                 ...state,
-                pending: false,
                 data:[
                     action.payload,
                     ...state.data
                 ],
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
             };
         }
         case actionTypes.addComment + '_REJECTED':{
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: -1, newStatus: 'error', textareaValue: null
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: -1, newStatus: 'error', textareaValue: null
             });
             return{
                 ...state,
-                pending: false,
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
             };
         }
         //loadComments
         case actionTypes.loadComments + '_PENDING':
             return{
-                ...state,
-                pending: true
+                ...state
             };
 
         case actionTypes.loadComments + '_FULFILLED':
             return{
                 ...state,
-                pending: false,
                 data:[
                     ...action.payload
                 ]
             };
 
         //loadMoreComments
-        case actionTypes.loadMoreComments + '_PENDING':
+        case actionTypes.loadMoreComments + '_PENDING':{      
             return{
                 ...state,
-                pending: true
+                status:{
+                    ...state.status,
+                    loadMoreComments: {
+                        ...state.status.loadMoreComments,
+                        status: 'pending'
+                    }
+                }
             };
+        }
         case actionTypes.loadMoreComments + '_FULFILLED':
             return{
                 ...state,
-                pending: false,
+                status:{
+                    ...state.status,
+                    loadMoreComments: {
+                        ...state.status.loadMoreComments,
+                        status: null
+                    }
+                },
+                data:[
+                    ...state.data,
+                    ...action.payload
+                ]
+            };
+        case actionTypes.loadMoreComments + '_REJECTED':
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    loadMoreComments: {
+                        ...state.status.loadMoreComments,
+                        status: 'error'
+                    }
+                },
                 data:[
                     ...state.data,
                     ...action.payload
                 ]
             };
         //loadMoreReplies
-        case actionTypes.loadMoreReplies + '_PENDING':
+        case actionTypes.loadMoreReplies + '_PENDING':{
+            let newStatusCommentGroup = getUpdatedStatusCommentGroup({
+                stateCommentGroup: state.status.comments, commentGroupId: action.payload.commentGroupId, newStatus: 'pending'
+            });
             return{
                 ...state,
-                pending: true
+                status: {
+                    ...state.status,
+                    comments: newStatusCommentGroup
+                }
             };
+        }
         case actionTypes.loadMoreReplies + '_FULFILLED':{
             let newData = loadMoreReplies(state.data, action.payload.data, action.payload.commentGroupId);
+            let newStatusCommentGroup = getUpdatedStatusCommentGroup({
+                stateCommentGroup: state.status.comments, commentGroupId: action.payload.commentGroupId, newStatus: null
+            });
             return{
                 ...state,
-                pending: true,
-                data: newData
+                data: newData,
+                status: {
+                    ...state.status,
+                    comments: newStatusCommentGroup
+                }
+            };
+        }
+        case actionTypes.loadMoreReplies + '_REJECTED':{
+            let newStatusCommentGroup = getUpdatedStatusCommentGroup({
+                stateCommentGroup: state.status.comments, commentGroupId: action.payload.commentGroupId, newStatus: 'error'
+            });
+            return{
+                ...state,
+                status: {
+                    ...state.status,
+                    comments: newStatusCommentGroup
+                }
             };
         }
 
         //addReply
         case actionTypes.addReply + '_PENDING':{
             let {replyTo} = action.payload;
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: replyTo, newStatus: 'pending', textareaValue: null
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: replyTo, newStatus: 'pending', textareaValue: null
             });
             return{
                 ...state,
-                pending: true,
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
 
             };
         }
         case actionTypes.addReply + '_FULFILLED':{
             let {replyTo} = action.payload;
             //rem, recent for the new id, not replyTo, new line
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: replyTo, newStatus: 'recent', textareaValue: ''
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: replyTo, newStatus: null, textareaValue: ''
             });
             let newData = addReply(state.data, action.payload);
+
+            let newReplyId = action.payload.id;
+            newStatusComment = getUpdatedStatusComment({
+                stateComments: newStatusComment, commentId: newReplyId, newStatus: 'recent', textareaValue: null
+            });
+
             return {
                 ...state,
-                pending: false,
                 data: [...newData],
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
 
 
             };
         }
         case actionTypes.addReply + '_REJECTED':{
             let {replyTo} = action.payload;
-            let newStatus = getUpdatedStatus({
-                statusData: state.status, id: replyTo, newStatus: 'error', textareaValue: null
+            let newStatusComment = getUpdatedStatusComment({
+                stateComments: state.status.comments, commentId: replyTo, newStatus: 'error', textareaValue: null
             });
             return {
                 ...state,
-                pending: false,
-                status: newStatus
+                status: {
+                    ...state.status,
+                    comments: newStatusComment
+                }
 
             };
         }
+
+        //textarea
         case actionTypes.updateTextarea:{
             let {id, value} = action.payload;
 
@@ -189,15 +291,38 @@ const CommentsReducer =( state = initialState.comments, action) =>{
                 ...state,
                 status: {
                     ...state.status,
-                    [id]: {
-                        ...state.status[id],
-                        value
+                    comments:{
+                        ...state.status.comments,
+                        [id]: {
+                            ...state.status[id],
+                            value
+                        }
                     }
                 }
             };
         }
 
+        case actionTypes.toggleActiveTextarea:{
+            let newActiveTextarea = toggleActiveTextarea(action.payload.id)(state.activeTextarea);
+            return {
+                ...state,
+                activeTextarea: newActiveTextarea
+            }
+        }
+        case actionTypes.setActiveTextarea:{
+            let {id, isActive} = action.payload;
+            return {
+                ...state,
+                activeTextarea: {
+                    ...state.activeTextarea,
+                    [id]:{
+                        ...state.activeTextarea[id],
+                        active: isActive
+                    }
+                },
 
+            }
+        }
     }
     return state;
 }

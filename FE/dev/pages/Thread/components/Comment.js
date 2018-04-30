@@ -4,8 +4,10 @@ import * as styles from '../styles/Comment.js';
 import Link from '~/commons/components/Link';
 
 import CommentTextArea from './CommentTextArea';
-import ThreadReducer from '../reducers/ThreadReducer';
-import {addReply, setActiveTextarea, updateTextarea} from '../actions';
+//reducers
+//import ThreadReducer from '../reducers/ThreadReducer';
+import CommentsReducer from '../reducers/CommentsReducer'
+import {addReply, toggleActiveTextarea, updateTextarea} from '../actions';
 
 
 class Comment extends React.Component {
@@ -17,7 +19,7 @@ class Comment extends React.Component {
     }
 
     toggleReply(){
-        this.props.setActiveTextarea(this.props.id);
+        this.props.toggleActiveTextarea(this.props.id);
     }
 
     addNewReply(content){
@@ -34,8 +36,10 @@ class Comment extends React.Component {
     render(){
         var {id, content, isReply, userId } = this.props;
 
-        var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id &&
-            this.props.thread.activeTextarea.active);
+        //var isVisible = (this.props.thread.activeTextarea.currentId === this.props.id &&
+        //    this.props.thread.activeTextarea.active);
+        var isVisible = (this.props.activeTextarea[this.props.id] !== undefined && this.props.activeTextarea[this.props.id].active);
+
 
         const tempc = ` | id: ${id} ---
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -87,7 +91,8 @@ class Comment extends React.Component {
 }
 
 const mapStateToProps = state =>( {
-    thread: state.ThreadReducer
+    //thread: state.ThreadReducer,
+    activeTextarea: state.CommentsReducer.activeTextarea
 });
 
 const mapDispatchToProps = dispatch=>({
@@ -97,8 +102,9 @@ const mapDispatchToProps = dispatch=>({
     updateTextarea: (id, value) =>
         dispatch(() => updateTextarea(id, value)(dispatch) )
     ,
-    setActiveTextarea: id =>
-        dispatch(setActiveTextarea(id))
+    //setActiveTextarea: id =>
+    toggleActiveTextarea: id =>
+        dispatch(toggleActiveTextarea(id))
 
 });
 
