@@ -26,9 +26,11 @@ class Comments extends React.Component {
         this.props.addComment(comment);
     }
     loadMoreComments(){
-        console.log('loadMoreComments')
+        const commentsData = this.props.comments.data;
+
         const threadId = 1; //temp ----------------
-        const lastId = 1; //temp ----------------
+        const lastId = commentsData[commentsData.length-1].id;
+        console.log('loadMoreComments ',lastId)
         this.props.loadMoreComments(threadId, lastId)
     }
 

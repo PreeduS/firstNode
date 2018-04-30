@@ -1,38 +1,41 @@
 import actionTypes from '../actionTypes';
 import initialState from './initialState'
 
-const addReply = (_data, reply) => {            //rem, edit here, state is mutated
-    let comment; //where the reply is added
-    let data = [..._data];
-    //first search by group
-    let commentGroup = data.find(cg => cg.id === reply.groupId);
 
-    //second search by replyTo(double check)
-    if(commentGroup.id === reply.replyTo ){
-        comment = commentGroup;
-    }else{
-        comment = (commentGroup.replies.find(r => r.id === reply.replyTo) !== undefined) ?
-        commentGroup : null;
+const addReply = (stateData, reply) => {
+    let commentIndex = stateData.findIndex(cg => cg.id === reply.groupId);
+    if(commentIndex === -1){
+        throw new Error('Failed to find commentgroup id: '+ reply.groupId)
     }
 
-    //console.log('data ',data)
-    //console.log('comment ',comment)
-    //console.log('reply ',reply)
-
-
-    if(comment === null) {
-        throw new Error('Failed to find comment id: '+ reply.replyTo)
+    let newStateData = [...stateData];
+    newStateData[commentIndex] = {
+        ...newStateData[commentIndex]
     }
 
-    if(comment.replies === undefined){
-        comment.replies = [reply];
-    }else{
-        comment.replies = [
-            reply,
-            ...comment.replies
-        ]
+    newStateData[commentIndex].replies = (newStateData[commentIndex].replies === undefined) ?
+    [reply] : [ ...newStateData[commentIndex].replies, reply];
+
+    return newStateData;
+}
+
+const loadMoreReplies = (stateData, newReplies , commentGroupId) =>{
+    let commentIndex = stateData.findIndex(cg => cg.id === commentGroupId);
+    if(commentIndex === -1){
+        throw new Error('Failed to find commentgroup id: '+ commentGroupId)
     }
-    return data;
+    let newStateData = [...stateData];
+    newStateData[commentIndex] = {
+        ...newStateData[commentIndex]
+    }
+
+    newStateData[commentIndex].replies = (newStateData[commentIndex].replies === undefined) ?
+    newReplies : [
+        ...newStateData[commentIndex].replies,
+        ...newReplies
+    ];
+
+    return newStateData;
 
 }
 
@@ -107,6 +110,36 @@ const CommentsReducer =( state = initialState.comments, action) =>{
                     ...action.payload
                 ]
             };
+
+        //loadMoreComments
+        case actionTypes.loadMoreComments + '_PENDING':
+            return{
+                ...state,
+                pending: true
+            };
+        case actionTypes.loadMoreComments + '_FULFILLED':
+            return{
+                ...state,
+                pending: false,
+                data:[
+                    ...state.data,
+                    ...action.payload
+                ]
+            };
+        //loadMoreReplies
+        case actionTypes.loadMoreReplies + '_PENDING':
+            return{
+                ...state,
+                pending: true
+            };
+        case actionTypes.loadMoreReplies + '_FULFILLED':{
+            let newData = loadMoreReplies(state.data, action.payload.data, action.payload.commentGroupId);
+            return{
+                ...state,
+                pending: true,
+                data: newData
+            };
+        }
 
         //addReply
         case actionTypes.addReply + '_PENDING':{

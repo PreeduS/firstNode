@@ -32,6 +32,26 @@ export const loadMoreComments = (threadId, lastId) => dispatch => {
     }).catch( generalError(actionTypes.loadMoreComments)(dispatch) )
 
 };
+export const loadMoreReplies = (threadId, commentGroupId, lastReplyId) => dispatch => {
+    dispatch( {type: actionTypes.loadMoreReplies + '_PENDING'} );
+  
+    console.log('threadId : ',threadId)
+    console.log('commentGroupId : ',commentGroupId)
+    console.log('lastReplyId : ',lastReplyId)
+
+
+    services.loadMoreReplies(threadId, commentGroupId, lastReplyId).then( result =>{       
+        dispatch({
+            type: actionTypes.loadMoreReplies + '_FULFILLED',
+            payload: {
+                commentGroupId,
+                data: result.data
+            }
+        });
+
+    }).catch( generalError(actionTypes.loadMoreReplies)(dispatch) )
+
+};
 
 //addComment & addReply - similar
 

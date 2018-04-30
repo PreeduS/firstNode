@@ -37,8 +37,9 @@ export const InputContent = styled.div`
         background:rgba(240,240,240,.3);
         border:1px solid rgba(223,230,233,.7);
         border-radius: 2px;
-        &:active{
+        &:active,&:focus{
             border:1px solid rgba(223,230,233,1);
+            background:rgba(250,250,250,.6);
         }
     }
 `;

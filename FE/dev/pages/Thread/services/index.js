@@ -5,7 +5,14 @@ const services = {
         axios.get('/api/thread/getall',{threadId})
     ,
     loadMoreComments: (threadId, lastId) =>
-        axios.get('/api/thread/loadMoreComments',{threadId, lastId})
+        axios.get('/api/thread/loadMoreComments',{
+            params: {threadId, lastId}
+        })
+    ,
+    loadMoreReplies: (threadId, commentGroupId, lastReplyId) =>
+        axios.get('/api/thread/loadMoreReplies',{
+            params: {threadId, commentGroupId, lastReplyId}
+        })
     ,
     addComment: (threadId, content) =>
         axios.post('/api/Thread/addComment',{threadId, content})
